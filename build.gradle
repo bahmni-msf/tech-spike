@@ -10,6 +10,32 @@ buildscript {
 	}
 }
 
+plugins {
+	id "nebula.ospackage" version "4.5.1"
+}
+
+ospackage {
+	packageName = 'bahmni-reporting'
+	release = System.getenv('GO_PIPELINE_COUNTER') ?: 1
+	arch = NOARCH
+	os = LINUX
+	user = 'root'
+
+	into '/opt/bahmni-reporting'
+
+	from("${projectDir}/scripts/rpm/") {
+		fileMode = 0755
+		createDirectoryEntry = true
+		into '/opt/bahmni-reporting/bin'
+	}
+
+	from("${buildDir}/libs") {
+		fileMode = 0755
+		createDirectoryEntry = true
+		into "/opt/bahmni-reporting/libs"
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -22,7 +48,6 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
 	compile("org.springframework.boot:spring-boot-starter-batch")
@@ -30,4 +55,14 @@ dependencies {
 	compile("org.hsqldb:hsqldb")
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+buildRpm {
+	dependsOn "build", "jar"
+
+	requires("cronie")
+	requires('postgresql92')
+
+	postInstall file("${projectDir}/scripts/postinstall.sh")
+	postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
