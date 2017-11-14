@@ -15,24 +15,24 @@ plugins {
 }
 
 ospackage {
-	packageName = 'bahmni-reporting'
+	packageName = 'bahmni-analytics'
 	release = System.getenv('GO_PIPELINE_COUNTER') ?: 1
 	arch = NOARCH
 	os = LINUX
 	user = 'root'
 
-	into '/opt/bahmni-reporting'
+	into '/opt/bahmni-analytics'
 
 	from("${projectDir}/scripts/rpm/") {
 		fileMode = 0755
 		createDirectoryEntry = true
-		into '/opt/bahmni-reporting/bin'
+		into '/opt/bahmni-analytics/bin'
 	}
 
 	from("${buildDir}/libs") {
 		fileMode = 0755
 		createDirectoryEntry = true
-		into "/opt/bahmni-reporting/libs"
+		into "/opt/bahmni-analytics/libs"
 	}
 }
 
