@@ -1,4 +1,4 @@
-package com.bahmni.batch.bahmnireporting;
+package com.bahmni.batch.bahmnianalytics;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

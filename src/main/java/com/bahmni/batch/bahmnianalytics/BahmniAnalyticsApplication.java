@@ -1,12 +1,12 @@
-package com.bahmni.batch.bahmnireporting;
+package com.bahmni.batch.bahmnianalytics;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BahmniReportingApplication {
+public class BahmniAnalyticsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BahmniReportingApplication.class, args);
+		SpringApplication.run(BahmniAnalyticsApplication.class, args);
 	}
 }
