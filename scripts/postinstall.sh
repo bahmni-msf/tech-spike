@@ -4,6 +4,7 @@ if [ ! -d /opt/bahmni-analytics/conf ]; then
     mkdir -p /opt/bahmni-analytics/conf
 fi
 
+
 manage_user_and_group() {
     #create bahmni user and group if doesn't exist
     USERID=bahmni
@@ -54,7 +55,7 @@ init_db() {
    RESULT_DB=`psql -U postgres -hlocalhost -tAc "select count(*) from pg_catalog.pg_database where datname='analytics'"`
    if [ "$RESULT_USER" == "0" ]; then
             echo "creating postgres user - analytics with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
-            createuser -Upostgres  -hlocalhost -d -R -s --replication analytics;
+            createuser -Upostgres  -hlocalhost -d -R -s --replication analytics -P;
    fi
    if [ "$RESULT_DB" == "0" ]; then
             echo "creating db - analytics "
