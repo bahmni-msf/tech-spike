@@ -49,9 +49,24 @@ setup_cronjob() {
     crontab -u bahmni -l | { cat; echo "30 23 * * * /usr/bin/bahmni-analytics >/dev/null 2>&1"; } | crontab -u bahmni -
 }
 
+init_db() {
+   RESULT_USER=`psql -U postgres -hlocalhost -tAc "select count(*) from pg_roles where rolname='analytics'"`
+   RESULT_DB=`psql -U postgres -hlocalhost -tAc "select count(*) from pg_catalog.pg_database where datname='analytics'"`
+   if [ "$RESULT_USER" == "0" ]; then
+            echo "creating postgres user - analytics with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
+            createuser -Upostgres  -hlocalhost -d -R -s --replication analytics;
+   fi
+   if [ "$RESULT_DB" == "0" ]; then
+            echo "creating db - analytics "
+            createdb -Uanalytics -hlocalhost analytics;
+            psql -U postgres -hlocalhost -tAc "revoke all privileges on  database analytics from public";
+   fi
+}
+
 
 manage_user_and_group
 create_analytics_directories
 link_directories
 manage_permissions
 setup_cronjob
+init_db
