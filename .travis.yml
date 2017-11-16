@@ -4,9 +4,9 @@ jdk:
 jobs:
   include:
     - stage : compile
-      script: ./compile
+      script: ./compile.sh
     - stage : test
-      script: ./test
+      script: ./test.sh
 
 stages:
       - compile
