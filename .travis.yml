@@ -1,3 +1,13 @@
 language : java
 jdk:
 - oraclejdk8
+jobs:
+  include:
+    - stage : compile
+      script: ./compile
+    - stage : test
+      script: ./test
+
+stages:
+      - compile
+      - test
