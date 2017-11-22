@@ -48,7 +48,7 @@ public class BahmniFormFactory {
 		int childDepth = depth+1;
 		for(Concept childConcept: childConcepts){
 
-			if(allConceptsSets.contains(childConcept)){
+			if(allConceptsSets.contains(childConcept) || addMoreAndMultiSelectConcepts.contains(childConcept)){
 				bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
 			}else if(childConcept.getIsSet() == 0){
 				bahmniForm.addField(childConcept);
