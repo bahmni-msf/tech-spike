@@ -31,6 +31,16 @@ public class Concept {
 		this.parent = parent;
 	}
 
+	public Concept(Integer id, String name, String dataType, Integer isSet,String title, Concept parent) {
+		this.id = id;
+		this.name = name;
+		this.dataType = dataType;
+		this.isSet = isSet;
+		this.title = title;
+		this.parent = parent;
+	}
+
+
 	public Concept getParent() {
 		return parent;
 	}

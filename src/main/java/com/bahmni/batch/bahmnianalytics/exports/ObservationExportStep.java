@@ -6,7 +6,9 @@ import com.bahmni.batch.bahmnianalytics.form.ObservationProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
+import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
+import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -81,7 +83,7 @@ public class ObservationExportStep {
     }
 
     private FlatFileItemWriter<List<Obs>> obsWriter() {
-
+        createTableForForm();
         FlatFileItemWriter<List<Obs>> writer = new FlatFileItemWriter<>();
         writer.setResource(new FileSystemResource(getOutputFile()));
 
@@ -98,6 +100,12 @@ public class ObservationExportStep {
         });
 
         return writer;
+    }
+
+    private void createTableForForm() {
+        TableMetaDataGenerator geneartor = new  TableMetaDataGenerator(this.form);
+        geneartor.run();
+        String sql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", this.form);
     }
 
     private File getOutputFile(){
