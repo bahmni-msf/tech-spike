@@ -3,6 +3,7 @@ package com.bahmni.batch.bahmnianalytics.form.domain;
 public class Concept {
 	private Integer id;
 	private String name;
+	private String dataType;
 	private Integer isSet;
 	private String title;
 	private Concept parent;
@@ -66,6 +67,14 @@ public class Concept {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public void setIsSet(Integer isSet) {
