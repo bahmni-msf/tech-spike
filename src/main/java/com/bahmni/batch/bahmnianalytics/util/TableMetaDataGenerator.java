@@ -63,6 +63,6 @@ public class TableMetaDataGenerator {
     }
 
     private static String getProcessedName(String formName) {
-        return formName.replaceAll(" |-","_").toLowerCase();
+        return formName.replaceAll(" |-|, ","_").toLowerCase();
     }
 }

@@ -3,6 +3,7 @@ package com.bahmni.batch.bahmnianalytics.exports;
 import com.bahmni.batch.bahmnianalytics.form.ObservationProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
+import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.junit.Assert;
@@ -26,6 +27,7 @@ import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +45,8 @@ public class ObservationExportStepTest {
     @Mock
     private FreeMarkerEvaluator<BahmniForm> freeMarkerEvaluator;
     @Mock
+    private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
+    @Mock
     private ObjectFactory<ObservationProcessor> observationProcessorFactory;
 
     private ObservationExportStep observationExportStep = new ObservationExportStep();
@@ -54,6 +58,7 @@ public class ObservationExportStepTest {
         setValuesForMemberFields(observationExportStep, "stepBuilderFactory", stepBuilderFactory);
         setValuesForMemberFields(observationExportStep, "outputFolder", outputFolder);
         setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
+        setValuesForMemberFields(observationExportStep, "freeMarkerEvaluatorForTables", freeMarkerEvaluatorForTables);
         setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
     }
 
@@ -94,6 +99,7 @@ public class ObservationExportStepTest {
         when(simpleStepBuilder.processor(any())).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.writer(any())).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.build()).thenReturn(expectedBaseExportStep);
+        when(freeMarkerEvaluatorForTables.evaluate(anyString(), any())).thenReturn("SomeSql");
 
         Step observationExportStepStep = observationExportStep.getStep();
 

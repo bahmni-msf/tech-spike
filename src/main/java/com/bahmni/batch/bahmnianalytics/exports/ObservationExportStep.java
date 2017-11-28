@@ -49,6 +49,9 @@ public class ObservationExportStep {
     @Autowired
     private FreeMarkerEvaluator<BahmniForm> freeMarkerEvaluator;
 
+    @Autowired
+    private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
+
     private BahmniForm form;
 
     @Autowired
@@ -104,8 +107,8 @@ public class ObservationExportStep {
 
     private void createTableForForm() {
         TableMetaDataGenerator geneartor = new  TableMetaDataGenerator(this.form);
-        geneartor.run();
-        String sql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", this.form);
+        TableData tableData = geneartor.run();
+        String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl",tableData);
     }
 
     private File getOutputFile(){
