@@ -1,39 +1,39 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.8.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.8.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 plugins {
-	id "nebula.ospackage" version "4.5.1"
+    id "nebula.ospackage" version "4.5.1"
 }
 
 ospackage {
-	packageName = 'bahmni-analytics'
-	release = System.getenv('GO_PIPELINE_COUNTER') ?: 1
-	arch = NOARCH
-	os = LINUX
-	user = 'root'
+    packageName = 'bahmni-analytics'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: 1
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
-	into '/opt/bahmni-analytics'
+    into '/opt/bahmni-analytics'
 
-	from("${projectDir}/scripts/rpm/") {
-		fileMode = 0755
-		createDirectoryEntry = true
-		into '/opt/bahmni-analytics/bin'
-	}
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/opt/bahmni-analytics/bin'
+    }
 
-	from("${buildDir}/libs") {
-		fileMode = 0755
-		createDirectoryEntry = true
-		into "/opt/bahmni-analytics/libs"
-	}
+    from("${buildDir}/libs") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "/opt/bahmni-analytics/libs"
+    }
 }
 
 apply plugin: 'java'
@@ -45,27 +45,32 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter')
-	compile("org.springframework.boot:spring-boot-starter-batch")
-	compile("org.springframework.batch:spring-batch-test")
-	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.35'
-	compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
-	compile("org.hsqldb:hsqldb")
-	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.boot:spring-boot-starter')
+    compile("org.springframework.boot:spring-boot-starter-batch")
+    compile("org.springframework.batch:spring-batch-test")
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.35'
+    compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+    compile("org.hsqldb:hsqldb")
+    compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
+    testCompile group: 'org.powermock', name: 'powermock-core', version: '1.6.4'
+    testCompile "org.powermock:powermock-module-junit4:1.6.4"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
+    testCompile "org.powermock:powermock-api-mockito:1.6.4"
 }
 
 buildRpm {
-	dependsOn "build", "jar"
+    dependsOn "build", "jar"
 
-	requires("cronie")
-	requires('postgresql92')
+    requires("cronie")
+    requires('postgresql92')
 
-	postInstall file("${projectDir}/scripts/postinstall.sh")
-	postUninstall file("${projectDir}/scripts/postuninstall.sh")
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
