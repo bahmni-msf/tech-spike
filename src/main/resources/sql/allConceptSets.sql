@@ -1,9 +1,11 @@
-select
-c.concept_id                                                          as id,
-cn.concept_full_name                                                  as name,
-c.is_set                                                              as isset,
-COALESCE (cv.code, cn.concept_full_name, cn.concept_short_name)       as title
-from concept c
-  left outer join concept_reference_term_map_view cv on cv.concept_id = c.concept_id  and cv.concept_map_type_name = 'SAME-AS' and cv.concept_reference_source_name = 'EndTB-Export'
-  left outer join concept_view  cn on cn.concept_id = c.concept_id
-where c.is_set = 1
+SELECT
+  c.concept_id                                                   AS id,
+  cn.concept_full_name                                           AS name,
+  c.is_set                                                       AS isset,
+  COALESCE(cv.code, cn.concept_full_name, cn.concept_short_name) AS title
+FROM concept c
+  LEFT OUTER JOIN concept_reference_term_map_view cv
+    ON cv.concept_id = c.concept_id AND cv.concept_map_type_name = 'SAME-AS' AND
+       cv.concept_reference_source_name = 'EndTB-Export'
+  LEFT OUTER JOIN concept_view cn ON cn.concept_id = c.concept_id
+WHERE c.is_set = 1

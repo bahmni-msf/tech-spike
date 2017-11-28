@@ -1,6 +1,9 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+temp
+temp2
+.DS_Store
 
 ### STS ###
 .apt_generated
