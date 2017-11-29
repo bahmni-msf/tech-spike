@@ -1,7 +1,7 @@
 package com.bahmni.batch.bahmnianalytics.form.domain;
 
 public class Obs {
-	private String treatmentNumber;
+	private String encounterId;
 	private Integer id;
 	private Integer parentId;
 	private Concept field;
@@ -9,20 +9,20 @@ public class Obs {
 
 	public Obs(){}
 
-	public Obs(String treatmentNumber, Integer id, Integer parentId, Concept field, String value) {
-		this.treatmentNumber = treatmentNumber;
+	public Obs(String encounterId, Integer id, Integer parentId, Concept field, String value) {
+		this.encounterId = encounterId;
 		this.id = id;
 		this.parentId = parentId;
 		this.field = field;
 		this.value = value;
 	}
 
-	public String getTreatmentNumber() {
-		return treatmentNumber;
+	public String getEncounterId() {
+		return encounterId;
 	}
 
-	public void setTreatmentNumber(String treatmentNumber) {
-		this.treatmentNumber = treatmentNumber;
+	public void setEncounterId(String encounterId) {
+		this.encounterId = encounterId;
 	}
 
 	public Integer getId() {

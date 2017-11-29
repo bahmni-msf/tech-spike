@@ -33,16 +33,16 @@ public class ObsFieldExtractorTest {
         List<Obs> obsList = new ArrayList<>();
         int obsGroupIdForCsv = 1;
         int rootObsId = 0;
-        String treatmentNumber = "AB1234";
-        obsList.add(new Obs(treatmentNumber, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "120"));
-        obsList.add(new Obs(treatmentNumber, obsGroupIdForCsv, rootObsId, new Concept(2, "Diastolic", 0), "80"));
+        String encounterId = "1234";
+        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "120"));
+        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(2, "Diastolic", 0), "80"));
 
         List<Object> result = Arrays.asList(fieldExtractor.extract(obsList));
 
         assertEquals(5, result.size());
         assertEquals(obsGroupIdForCsv, result.get(0));
         assertEquals(rootObsId, result.get(1));
-        assertEquals(treatmentNumber, result.get(2));
+        assertEquals(encounterId, result.get(2));
         assertEquals("120", result.get(3));
         assertEquals("80", result.get(4));
     }
@@ -50,17 +50,17 @@ public class ObsFieldExtractorTest {
     @Test
     public void ensureThatSplCharsAreHandledInCSVInTheObsValue() {
         List<Obs> obsList = new ArrayList<>();
-        String treatmentNumber = "AB1234";
+        String encounterId = "1234";
         int obsGroupIdForCsv = 1;
         int rootObsId = 0;
-        obsList.add(new Obs(treatmentNumber, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "abc\ndef\tghi,klm"));
+        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "abc\ndef\tghi,klm"));
 
         List<Object> result = Arrays.asList(fieldExtractor.extract(obsList));
 
         assertEquals(5, result.size());
         assertEquals(obsGroupIdForCsv, result.get(0));
         assertEquals(rootObsId, result.get(1));
-        assertEquals(treatmentNumber, result.get(2));
+        assertEquals(encounterId, result.get(2));
         assertEquals("abc def ghi klm", result.get(3));
         assertEquals(null, result.get(4));
     }
