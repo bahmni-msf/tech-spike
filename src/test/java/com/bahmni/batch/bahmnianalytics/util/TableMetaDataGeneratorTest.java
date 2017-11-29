@@ -43,20 +43,26 @@ public class TableMetaDataGeneratorTest {
         assertNotNull(tableData);
         assertEquals("post_operative_anaesthesia_note", tableData.getName());
         assertNotNull(tableData.getColumns());
-        assertEquals(3, tableData.getColumns().size());
+        assertEquals(4, tableData.getColumns().size());
         TableColumn postOperativeNoteColumn = tableData.getColumns().get(0);
         assertEquals("id_post_operative_anaesthesia_note", postOperativeNoteColumn.getName());
         assertEquals("integer", postOperativeNoteColumn.getType());
         assertTrue(postOperativeNoteColumn.isPrimaryKey());
         assertNull(postOperativeNoteColumn.getReference());
 
-        TableColumn apnStartTimeColumn = tableData.getColumns().get(1);
+        TableColumn encounterIdColumn = tableData.getColumns().get(1);
+        assertEquals("encounter_id", encounterIdColumn.getName());
+        assertEquals("integer", encounterIdColumn.getType());
+        assertFalse(encounterIdColumn.isPrimaryKey());
+        assertNull(encounterIdColumn.getReference());
+
+        TableColumn apnStartTimeColumn = tableData.getColumns().get(2);
         assertEquals("apn_anaesthesia_start_time", apnStartTimeColumn.getName());
         assertEquals("timestamp", apnStartTimeColumn.getType());
         assertFalse(apnStartTimeColumn.isPrimaryKey());
         assertNull(apnStartTimeColumn.getReference());
 
-        TableColumn apnEndTimeColumn = tableData.getColumns().get(2);
+        TableColumn apnEndTimeColumn = tableData.getColumns().get(3);
         assertEquals("apn_anaesthesia_end_time", apnEndTimeColumn.getName());
         assertEquals("timestamp", apnEndTimeColumn.getType());
         assertFalse(apnEndTimeColumn.isPrimaryKey());
@@ -82,7 +88,7 @@ public class TableMetaDataGeneratorTest {
         assertNotNull(tableData);
         assertEquals("transfusion", tableData.getName());
         assertNotNull(tableData.getColumns());
-        assertEquals(4, tableData.getColumns().size());
+        assertEquals(5, tableData.getColumns().size());
         TableColumn transfusionColumn = tableData.getColumns().get(0);
         assertEquals("id_transfusion", transfusionColumn.getName());
         assertEquals("integer", transfusionColumn.getType());
@@ -97,13 +103,19 @@ public class TableMetaDataGeneratorTest {
         assertEquals("id_post_operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceColumn());
         assertEquals("post_operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceTable());
 
-        TableColumn bloodTransfusionColumn = tableData.getColumns().get(2);
+        TableColumn encounterIdColumn = tableData.getColumns().get(2);
+        assertEquals("encounter_id", encounterIdColumn.getName());
+        assertEquals("integer", encounterIdColumn.getType());
+        assertFalse(encounterIdColumn.isPrimaryKey());
+        assertNull(encounterIdColumn.getReference());
+
+        TableColumn bloodTransfusionColumn = tableData.getColumns().get(3);
         assertEquals("blood_transfusion", bloodTransfusionColumn.getName());
         assertEquals("text", bloodTransfusionColumn.getType());
         assertFalse(bloodTransfusionColumn.isPrimaryKey());
         assertNull(bloodTransfusionColumn.getReference());
 
-        TableColumn transfusionCommentsColumn = tableData.getColumns().get(3);
+        TableColumn transfusionCommentsColumn = tableData.getColumns().get(4);
         assertEquals("intra_operative_transfusion_related_reaction_comments", transfusionCommentsColumn.getName());
         assertEquals("text", transfusionCommentsColumn.getType());
         assertFalse(transfusionCommentsColumn.isPrimaryKey());
