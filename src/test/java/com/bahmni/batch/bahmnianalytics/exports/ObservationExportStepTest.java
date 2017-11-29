@@ -45,9 +45,9 @@ public class ObservationExportStepTest {
     @Mock
     private FreeMarkerEvaluator<BahmniForm> freeMarkerEvaluator;
     @Mock
-    private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
-    @Mock
     private ObjectFactory<ObservationProcessor> observationProcessorFactory;
+    @Mock
+    private ObjectFactory<DatabaseObsWriter> obsWriterObjectFactory;
 
     private ObservationExportStep observationExportStep = new ObservationExportStep();
 
@@ -58,8 +58,8 @@ public class ObservationExportStepTest {
         setValuesForMemberFields(observationExportStep, "stepBuilderFactory", stepBuilderFactory);
         setValuesForMemberFields(observationExportStep, "outputFolder", outputFolder);
         setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
-        setValuesForMemberFields(observationExportStep, "freeMarkerEvaluatorForTables", freeMarkerEvaluatorForTables);
         setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
+        setValuesForMemberFields(observationExportStep,"databaseObsWriterObjectFactory",obsWriterObjectFactory );
     }
 
     @Test
@@ -96,10 +96,11 @@ public class ObservationExportStepTest {
         when(stepBuilder.chunk(100)).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.reader(any())).thenReturn(simpleStepBuilder);
         when(observationProcessorFactory.getObject()).thenReturn(new ObservationProcessor());
+        when(obsWriterObjectFactory.getObject()).thenReturn(new DatabaseObsWriter());
         when(simpleStepBuilder.processor(any())).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.writer(any())).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.build()).thenReturn(expectedBaseExportStep);
-        when(freeMarkerEvaluatorForTables.evaluate(anyString(), any())).thenReturn("SomeSql");
+
 
         Step observationExportStepStep = observationExportStep.getStep();
 

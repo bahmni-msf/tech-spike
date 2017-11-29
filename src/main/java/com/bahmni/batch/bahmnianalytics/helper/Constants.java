@@ -12,5 +12,6 @@ public class Constants {
         put("Date","date");
         put("Text","text");
         put("N/A","integer");
+        put("Coded","text");
     }};
 }
