@@ -1,4 +1,5 @@
 <@compress single_line=true>
+DROP TABLE IF EXISTS ${input.name} CASCADE;
 <#if input.getColumns()?size &gt; 0>
 CREATE TABLE ${input.name}(
     <#list input.columns as column>
