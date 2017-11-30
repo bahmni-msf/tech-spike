@@ -3,7 +3,8 @@ package com.bahmni.batch.bahmnianalytics.util;
 import com.bahmni.batch.bahmnianalytics.form.domain.*;
 import com.bahmni.batch.bahmnianalytics.helper.Constants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TableMetaDataGenerator {
@@ -38,7 +39,7 @@ public class TableMetaDataGenerator {
     private void configureNonKeyColumns() {
         List<Concept> fields = form.getFields();
         List<TableColumn> columns = new ArrayList<>();
-        fields.stream().forEach( field -> columns.add(new TableColumn(getProcessedName(field.getName()),
+        fields.stream().forEach(field -> columns.add(new TableColumn(getProcessedName(field.getName()),
                 Constants.openMRSToPostgresDataTypeMap.get(field.getDataType()),
                 false,
                 null)));
@@ -62,13 +63,13 @@ public class TableMetaDataGenerator {
     }
 
     private void configurePrimaryKeyColumn() {
-        tableData.addColumn(new TableColumn(getProcessedName("id_" +form.getFormName().getName()),
+        tableData.addColumn(new TableColumn(getProcessedName("id_" + form.getFormName().getName()),
                 Constants.openMRSToPostgresDataTypeMap.get(form.getFormName().getDataType()),
                 true,
                 null));
     }
 
     private static String getProcessedName(String formName) {
-        return formName.replaceAll(" |-|, ","_").toLowerCase();
+        return formName.replace(",", "").replace(' ', '_').replace('-', '_').replaceAll("[?()]*", "").toLowerCase();
     }
 }
