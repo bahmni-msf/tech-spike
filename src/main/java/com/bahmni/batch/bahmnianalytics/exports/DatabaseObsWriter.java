@@ -25,13 +25,18 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
     @Autowired
     private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
 
+    @Autowired
+    private FreeMarkerEvaluator<ObsRecordExtractorForTable> freeMarkerEvaluatorForTableRecords;
+
     BahmniForm form;
+
+    TableData tableData;
 
     @Override
     public void write(List<? extends List<Obs>> items) throws Exception {
         try {
             createTableForForm();
-            System.out.println(items.size());
+            insertRecords(items);
         } catch (Exception e) {
             System.out.println("Cannot create table" + e.getMessage());
         }
@@ -41,12 +46,17 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
         this.form = form;
     }
 
-    private void createTableForForm() throws Exception {
+    private void createTableForForm()  {
         TableMetaDataGenerator generator = new TableMetaDataGenerator(this.form);
-        TableData tableData = generator.run();
+        tableData = generator.run();
         String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData);
-        System.out.println("Form name is *** " + this.form.getFormName().getName());
         postgresJdbcTemplate.execute(sql);
     }
 
+    private void insertRecords(List<? extends List<Obs>> items) {
+        ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
+        extractor.run(items,tableData);
+        String sql = freeMarkerEvaluatorForTableRecords.evaluate("insertObs.ftl", extractor);
+        postgresJdbcTemplate.execute(sql);
+    }
 }
