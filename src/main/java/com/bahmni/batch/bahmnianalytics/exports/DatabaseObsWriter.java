@@ -34,12 +34,8 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
 
     @Override
     public void write(List<? extends List<Obs>> items) throws Exception {
-        try {
             createTableForForm();
             insertRecords(items);
-        } catch (Exception e) {
-            System.out.println("Cannot create table" + e.getMessage());
-        }
     }
 
     public void setForm(BahmniForm form) {
@@ -47,16 +43,24 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
     }
 
     private void createTableForForm()  {
-        TableMetaDataGenerator generator = new TableMetaDataGenerator(this.form);
-        tableData = generator.run();
-        String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData);
-        postgresJdbcTemplate.execute(sql);
+        try {
+            TableMetaDataGenerator generator = new TableMetaDataGenerator(this.form);
+            tableData = generator.run();
+            String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData);
+            postgresJdbcTemplate.execute(sql);
+        } catch (Exception e) {
+            System.out.println("Cannot create table: " + tableData.getName() + " " + e.getMessage());
+        }
     }
 
-    private void insertRecords(List<? extends List<Obs>> items) {
-        ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
-        extractor.run(items,tableData);
-        String sql = freeMarkerEvaluatorForTableRecords.evaluate("insertObs.ftl", extractor);
-        postgresJdbcTemplate.execute(sql);
+    private void insertRecords(List<? extends List<Obs>> items)  throws  Exception {
+        try {
+            ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
+            extractor.run(items, tableData);
+            String sql = freeMarkerEvaluatorForTableRecords.evaluate("insertObs.ftl", extractor);
+            postgresJdbcTemplate.execute(sql);
+        } catch (Exception e) {
+            System.out.println("Cannot insert into " + tableData.getName() + " " + e.getMessage());
+        }
     }
 }

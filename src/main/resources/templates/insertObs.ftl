@@ -7,13 +7,13 @@
                 <#if record?keys?seq_index_of(prop) <= record?keys?size - 2 >,</#if>
             </#list> )
         VALUES (
-            <#list record?values as value>
-                <#if value?has_content>
-                ${value!}
+            <#list record?keys as prop>
+                <#if record[prop]?has_content>
+                ${record[prop]!}
                 <#else>
                 null
                 </#if>
-                <#if record?values?seq_index_of(value) <= record?values?size - 2 >,</#if>
+                <#if record?keys?seq_index_of(prop) <= record?keys?size - 2 >,</#if>
             </#list> );
         </#list>
     </#if>
