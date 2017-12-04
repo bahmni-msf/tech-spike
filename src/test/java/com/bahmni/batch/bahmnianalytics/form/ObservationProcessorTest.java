@@ -46,6 +46,7 @@ public class ObservationProcessorTest {
         observationProcessor.setJdbcTemplate(namedParameterJdbcTemplate);
         observationProcessor.setObsDetailSqlResource(new ByteArrayResource("Some Query".getBytes()));
         observationProcessor.setLeafObsSqlResource(new ByteArrayResource("get..all..child".getBytes()));
+        observationProcessor.setFormObsSqlResource(new ByteArrayResource("get..all..leaf obs".getBytes()));
         observationProcessor.setFormFieldTransformer(formFieldTransformer);
 
         obsList = new ArrayList<>();

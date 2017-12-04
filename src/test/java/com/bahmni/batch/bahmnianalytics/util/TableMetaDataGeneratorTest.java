@@ -71,12 +71,14 @@ public class TableMetaDataGeneratorTest {
 
     @Test
     public void shouldReturnTabbleDataForGivenFormWithForeignKeys() {
+        BahmniForm allObservationTemplateForm = new BahmniForm();
+        Concept allObservationTemplate = new Concept(0, "All Observation Template", "N/A", 1, "All Observation Template", null);
         BahmniForm postOperativeForm = new BahmniForm();
-        postOperativeForm.setParent(null);
-        Concept preOperativeConcept = new Concept(0, "post-operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", null);
-        postOperativeForm.setFormName(preOperativeConcept);
+        postOperativeForm.setParent(allObservationTemplateForm);
+        Concept postOperativeConcept = new Concept(0, "post-operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", allObservationTemplate);
+        postOperativeForm.setFormName(postOperativeConcept);
         BahmniForm transfusionForm = new BahmniForm();
-        Concept transfusionConcept = new Concept(1, "transfusion", "N/A", 1, "transfusion", preOperativeConcept);
+        Concept transfusionConcept = new Concept(1, "transfusion", "N/A", 1, "transfusion", postOperativeConcept);
         transfusionForm.setFormName(transfusionConcept);
         transfusionForm.setParent(postOperativeForm);
         transfusionForm.addField(new Concept(2, "Blood transfusion", "Text", 0, "Blood transfusion", transfusionConcept));

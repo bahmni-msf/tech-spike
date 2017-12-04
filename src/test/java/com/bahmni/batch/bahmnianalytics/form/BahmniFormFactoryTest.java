@@ -126,7 +126,7 @@ public class BahmniFormFactoryTest {
         assertEquals(1, otherNotesForm.getChildren().size());
 
         BahmniForm notesForm = otherNotesForm.getChildren().get(0);
-        assertEquals(notesForm.getDepthToParent(), 1);
+        assertEquals(notesForm.getDepthToParent(), 2);
 
         bahmniForm = bahmniFormFactory.createForm(new Concept(1, "Discharge Summary, Surgeries and Procedures", 1), null);
         assertNotNull(bahmniForm);

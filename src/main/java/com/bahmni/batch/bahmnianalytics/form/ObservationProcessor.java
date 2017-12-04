@@ -136,6 +136,10 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 		this.leafObsSqlResource = leafObsSqlResource;
 	}
 
+	public void setFormObsSqlResource(Resource formObsSqlResource) {
+		this.formObsSqlResource = formObsSqlResource;
+	}
+
 	public void setFormFieldTransformer(FormFieldTransformer formFieldTransformer) {
 		this.formFieldTransformer = formFieldTransformer;
 	}
