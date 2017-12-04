@@ -22,9 +22,9 @@ public class ObsRecordExtractorForTable {
 
         for (List<Obs> record : items) {
 
-//            if(record.size() == 0) {
-//                continue;
-//            }
+            if(record.size() == 0) {
+                continue;
+            }
 
             Map<String, String> recordMap = new HashMap<>();
 
