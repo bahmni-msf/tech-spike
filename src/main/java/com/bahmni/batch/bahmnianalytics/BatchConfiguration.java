@@ -1,6 +1,7 @@
 package com.bahmni.batch.bahmnianalytics;
 
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
+import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
@@ -49,6 +50,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	public JobCompletionNotificationListener jobCompletionNotificationListener;
 
+	@Autowired
+	public TableGeneratorStep tableGeneratorStep;
+
 
 	@Value("${zipFolder}")
 	private Resource zipFolder;
@@ -75,11 +79,11 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				ObservationExportStep observationExportStep = observationExportStepFactory.getObject();
 				observationExportStep.setForm(form);
 				completeDataExport.next(observationExportStep.getStep());
+				tableGeneratorStep.createTableForForm(form);
 		}
 
 		return completeDataExport.end().build();
 	}
-
 
 	@Bean
 	public freemarker.template.Configuration freeMarkerConfiguration() throws IOException {

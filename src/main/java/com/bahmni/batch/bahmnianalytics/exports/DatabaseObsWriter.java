@@ -4,7 +4,6 @@ import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
 import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
-import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,18 +22,16 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
     private JdbcTemplate postgresJdbcTemplate;
 
     @Autowired
-    private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
+    public TableGeneratorStep tableGeneratorStep;
 
     @Autowired
     private FreeMarkerEvaluator<ObsRecordExtractorForTable> freeMarkerEvaluatorForTableRecords;
 
     BahmniForm form;
 
-    TableData tableData;
 
     @Override
     public void write(List<? extends List<Obs>> items) throws Exception {
-            createTableForForm();
             insertRecords(items);
     }
 
@@ -42,18 +39,9 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
         this.form = form;
     }
 
-    private void createTableForForm()  {
-        try {
-            TableMetaDataGenerator generator = new TableMetaDataGenerator(this.form);
-            tableData = generator.run();
-            String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData);
-            postgresJdbcTemplate.execute(sql);
-        } catch (Exception e) {
-            System.out.println("Cannot create table: " + tableData.getName() + " " + e.getMessage());
-        }
-    }
 
     private void insertRecords(List<? extends List<Obs>> items)  throws  Exception {
+        TableData tableData = tableGeneratorStep.getTableDataForForm(this.form);
         try {
             ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
             extractor.run(items, tableData);

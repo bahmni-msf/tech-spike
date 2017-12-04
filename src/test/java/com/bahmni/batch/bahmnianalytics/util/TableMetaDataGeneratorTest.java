@@ -58,13 +58,13 @@ public class TableMetaDataGeneratorTest {
 
         TableColumn apnStartTimeColumn = tableData.getColumns().get(2);
         assertEquals("apn_anaesthesia_start_time", apnStartTimeColumn.getName());
-        assertEquals("timestamp", apnStartTimeColumn.getType());
+        assertEquals("date", apnStartTimeColumn.getType());
         assertFalse(apnStartTimeColumn.isPrimaryKey());
         assertNull(apnStartTimeColumn.getReference());
 
         TableColumn apnEndTimeColumn = tableData.getColumns().get(3);
         assertEquals("apn_anaesthesia_end_time", apnEndTimeColumn.getName());
-        assertEquals("timestamp", apnEndTimeColumn.getType());
+        assertEquals("date", apnEndTimeColumn.getType());
         assertFalse(apnEndTimeColumn.isPrimaryKey());
         assertNull(apnEndTimeColumn.getReference());
     }

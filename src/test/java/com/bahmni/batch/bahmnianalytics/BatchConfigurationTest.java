@@ -1,6 +1,7 @@
 package com.bahmni.batch.bahmnianalytics;
 
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
+import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
@@ -62,6 +63,9 @@ public class BatchConfigurationTest {
     @Mock
     private ObjectFactory<ObservationExportStep> observationExportStepFactory;
 
+    @Mock
+    private TableGeneratorStep tableGeneratorStep;
+
 
     @Before
     public void setUp() throws Exception {
@@ -74,6 +78,7 @@ public class BatchConfigurationTest {
         setValuesForMemberFields(batchConfiguration, "jobBuilderFactory", jobBuilderFactory);
         setValuesForMemberFields(batchConfiguration, "treatmentRegistrationBaseExportStep", treatmentRegistrationBaseExportStep);
         setValuesForMemberFields(batchConfiguration, "observationExportStepFactory", observationExportStepFactory);
+        setValuesForMemberFields(batchConfiguration, "tableGeneratorStep", tableGeneratorStep);
     }
 
     @Test
@@ -133,6 +138,7 @@ public class BatchConfigurationTest {
         verify(fstgObservationExportStep, times(1)).setForm(fstg);
         verify(jobFlowBuilder, times(1)).next(medicalHistoryObservationStep);
         verify(jobFlowBuilder, times(1)).next(fstgObservationStep);
+        verify(tableGeneratorStep, times(1)).createTableForForm(fstg);
     }
 
     private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
