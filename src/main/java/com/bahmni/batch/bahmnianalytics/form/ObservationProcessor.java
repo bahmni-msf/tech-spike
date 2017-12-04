@@ -27,6 +27,8 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 
 	private String leafObsSql;
 
+	private String formObsSql;
+
 	private BahmniForm form;
 
 	@Autowired
@@ -37,6 +39,9 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 
 	@Value("classpath:sql/leafObs.sql")
 	private Resource leafObsSqlResource;
+
+	@Value("classpath:sql/formObs.sql")
+	private Resource formObsSqlResource;
 
 	@Autowired
 	private FormFieldTransformer formFieldTransformer;
@@ -53,9 +58,25 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 
 			List<Obs> obsRows = fetchAllLeafObs(allChildObsIds);
 
+			obsRows.addAll(formObs((Integer) obsRow.get("obs_id")));
+
 		setObsIdAndParentObsId(obsRows,(Integer)obsRow.get("obs_id"), (Integer)obsRow.get("parent_obs_id"));
 
 		return obsRows;
+	}
+
+	private List<Obs> formObs(Integer obsId) {
+		Map<String,Integer> params = new HashMap<>();
+		params.put("obsId",obsId );
+		return jdbcTemplate.query(formObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
+			@Override
+			public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
+				Obs obs = super.mapRow(resultSet, i);
+				Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
+				obs.setField(concept);
+				return obs;
+			}
+		});
 	}
 
 	private List<Obs> fetchAllLeafObs(List<Integer> allChildObsGroupIds) {
@@ -123,6 +144,7 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 	public void postConstruct(){
 		this.obsDetailSql = BatchUtils.convertResourceOutputToString(obsDetailSqlResource);
 		this.leafObsSql = BatchUtils.convertResourceOutputToString(leafObsSqlResource);
+		this.formObsSql = BatchUtils.convertResourceOutputToString(formObsSqlResource);
 	}
 
 	public void setObsIdAndParentObsId(List<Obs> childObs, Integer obsId,Integer parentObsId) {

@@ -47,7 +47,7 @@ public class TableMetaDataGenerator {
     }
 
     private void configureForeignKeyColumn() {
-        if (form.getParent() != null) {
+        if (form.getParent() != null && form.getParent().getParent() != null) {
 
             Concept formParentConcept = form.getParent().getFormName();
             String formParentConceptName = formParentConcept.getName();

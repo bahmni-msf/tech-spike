@@ -22,6 +22,10 @@ public class ObsRecordExtractorForTable {
 
         for (List<Obs> record : items) {
 
+//            if(record.size() == 0) {
+//                continue;
+//            }
+
             Map<String, String> recordMap = new HashMap<>();
 
             tableData.getColumns().forEach(tableColumn -> recordMap.put(tableColumn.getName(), null));

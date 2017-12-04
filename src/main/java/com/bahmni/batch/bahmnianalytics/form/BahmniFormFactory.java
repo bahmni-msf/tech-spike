@@ -35,7 +35,7 @@ public class BahmniFormFactory {
         bahmniForm.setDepthToParent(depth);
         bahmniForm.setParent(parentForm);
 
-        constructFormFields(concept, bahmniForm, 0);
+        constructFormFields(concept, bahmniForm, depth);
 
         return bahmniForm;
     }
