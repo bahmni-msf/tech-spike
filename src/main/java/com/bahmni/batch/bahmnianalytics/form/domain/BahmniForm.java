@@ -15,6 +15,8 @@ public class BahmniForm {
 
 	private int depthToParent;
 
+	private BahmniForm rootForm;
+
 	public List<BahmniForm> getChildren() {
 		return children;
 	}
@@ -61,4 +63,11 @@ public class BahmniForm {
 		return formName.getName().replaceAll("\\s", "_").replaceAll(",","").replaceAll("/","").toLowerCase() ;
 	}
 
+	public void setRootForm(BahmniForm rootForm) {
+		this.rootForm = rootForm;
+	}
+
+	public BahmniForm getRootForm() {
+		return rootForm;
+	}
 }

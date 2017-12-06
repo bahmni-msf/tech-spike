@@ -13,4 +13,5 @@ WHERE obs0.concept_id=${input.formName.id?c}
 AND obs0.voided = 0
 <#if input.parent?has_content && input.depthToParent &gt;1>
 AND obs1.concept_id=${input.parent.formName.id?c}
+AND obs${input.depthToParent-1}.concept_id=${input.rootForm.formName.id?c}
 </#if>
