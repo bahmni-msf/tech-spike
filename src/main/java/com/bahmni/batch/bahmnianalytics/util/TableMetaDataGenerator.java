@@ -27,8 +27,14 @@ public class TableMetaDataGenerator {
     private void configureColumns() {
         configurePrimaryKeyColumn();
         configureForeignKeyColumn();
+        configurePatientIdColumn();
         configureEncounterIdColumn();
         configureNonKeyColumns();
+    }
+
+    private void configurePatientIdColumn() {
+        TableColumn patientIdColumn = new TableColumn("patient_id", "integer", false, null);
+        tableData.addColumn(patientIdColumn);
     }
 
     private void configureEncounterIdColumn() {

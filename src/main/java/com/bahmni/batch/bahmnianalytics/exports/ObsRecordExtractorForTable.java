@@ -57,6 +57,10 @@ public class ObsRecordExtractorForTable {
                     value[0] = getPostgresCompatibleValue(obs.getEncounterId(), tableColumn.getType());
                     recordMap.replace(tableColumnName, value[0]);
                 }
+                else if (tableColumnName.contains("patient") && recordMap.get(tableColumnName) == null) {
+                    value[0] = getPostgresCompatibleValue(obs.getPatientId(), tableColumn.getType());
+                    recordMap.replace(tableColumnName, value[0]);
+                }
             });
             recordList.add(recordMap);
         }

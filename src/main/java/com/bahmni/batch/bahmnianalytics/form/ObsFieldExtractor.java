@@ -38,6 +38,7 @@ public class ObsFieldExtractor implements FieldExtractor<List<Obs>> {
 			row.add(obsList.get(0).getParentId());
 		}
 
+		row.add(obsList.get(0).getPatientId());
 		row.add(obsList.get(0).getEncounterId());
 
 		for(Concept field: form.getFields()){

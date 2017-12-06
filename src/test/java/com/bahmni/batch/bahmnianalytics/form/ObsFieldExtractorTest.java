@@ -34,35 +34,39 @@ public class ObsFieldExtractorTest {
         int obsGroupIdForCsv = 1;
         int rootObsId = 0;
         String encounterId = "1234";
-        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "120"));
-        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(2, "Diastolic", 0), "80"));
+        String patientId = "123";
+        obsList.add(new Obs(patientId,encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "120"));
+        obsList.add(new Obs(patientId,encounterId, obsGroupIdForCsv, rootObsId, new Concept(2, "Diastolic", 0), "80"));
 
         List<Object> result = Arrays.asList(fieldExtractor.extract(obsList));
 
-        assertEquals(5, result.size());
+        assertEquals(6, result.size());
         assertEquals(obsGroupIdForCsv, result.get(0));
         assertEquals(rootObsId, result.get(1));
-        assertEquals(encounterId, result.get(2));
-        assertEquals("120", result.get(3));
-        assertEquals("80", result.get(4));
+        assertEquals("123",result.get(2));
+        assertEquals(encounterId, result.get(3));
+        assertEquals("120", result.get(4));
+        assertEquals("80", result.get(5));
     }
 
     @Test
     public void ensureThatSplCharsAreHandledInCSVInTheObsValue() {
         List<Obs> obsList = new ArrayList<>();
         String encounterId = "1234";
+        String patientId = "1233";
         int obsGroupIdForCsv = 1;
         int rootObsId = 0;
-        obsList.add(new Obs(encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "abc\ndef\tghi,klm"));
+        obsList.add(new Obs(patientId,encounterId, obsGroupIdForCsv, rootObsId, new Concept(1, "Systolic", 0), "abc\ndef\tghi,klm"));
 
         List<Object> result = Arrays.asList(fieldExtractor.extract(obsList));
 
-        assertEquals(5, result.size());
+        assertEquals(6, result.size());
         assertEquals(obsGroupIdForCsv, result.get(0));
         assertEquals(rootObsId, result.get(1));
-        assertEquals(encounterId, result.get(2));
-        assertEquals("abc def ghi klm", result.get(3));
-        assertEquals(null, result.get(4));
+        assertEquals(patientId,result.get(2));
+        assertEquals(encounterId, result.get(3));
+        assertEquals("abc def ghi klm", result.get(4));
+        assertEquals(null, result.get(5));
     }
 
     @Test

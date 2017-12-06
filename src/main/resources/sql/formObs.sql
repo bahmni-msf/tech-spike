@@ -1,5 +1,6 @@
 SELECT
   o.encounter_id                   AS encounterId,
+  o.person_id                      AS patientId,
   o.concept_id                     AS conceptId,
   o.obs_id                         AS id,
   coalesce(DATE_FORMAT(o.value_datetime, '%d/%b/%Y'), o.value_numeric, o.value_text, cv.code, cvn.concept_full_name,
