@@ -69,7 +69,7 @@ buildRpm {
     dependsOn "build", "jar"
 
     requires("cronie")
-    requires('postgresql92')
+    requires('postgresql')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
