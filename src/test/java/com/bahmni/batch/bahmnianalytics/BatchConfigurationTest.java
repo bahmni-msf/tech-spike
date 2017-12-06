@@ -91,7 +91,7 @@ public class BatchConfigurationTest {
         Configuration freeMarkerConfiguration = batchConfiguration.freeMarkerConfiguration();
 
         Assert.assertEquals(configuration, freeMarkerConfiguration);
-        verify(configuration, times(1)).setDirectoryForTemplateLoading(configurationFile);
+        verify(configuration, times(1)).setClassForTemplateLoading(any(),any());
         verify(configuration, times(1)).setDefaultEncoding("UTF-8");
         verify(configuration, times(1)).setTemplateExceptionHandler(any(TemplateExceptionHandler.class));
     }

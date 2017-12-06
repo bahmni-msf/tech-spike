@@ -89,8 +89,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	public freemarker.template.Configuration freeMarkerConfiguration() throws IOException {
 		freemarker.template.Configuration freemarkerTemplateConfig = new freemarker.template.Configuration(
 				freemarker.template.Configuration.VERSION_2_3_22);
-		freemarkerTemplateConfig.setDirectoryForTemplateLoading(freemarkerTemplateLocation.getFile());
 		freemarkerTemplateConfig.setDefaultEncoding("UTF-8");
+		freemarkerTemplateConfig.setClassForTemplateLoading(this.getClass(),"/templates");
 		freemarkerTemplateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
 		return freemarkerTemplateConfig;
