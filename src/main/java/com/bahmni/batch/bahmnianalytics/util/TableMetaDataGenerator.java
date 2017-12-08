@@ -75,7 +75,7 @@ public class TableMetaDataGenerator {
                 null));
     }
 
-    private static String getProcessedName(String formName) {
+    public static String getProcessedName(String formName) {
         return formName.replaceAll("[^\\w\\s]", " ").trim().replaceAll(" +","_").toLowerCase();
     }
 }

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator.getProcessedName;
+
 public class ObsRecordExtractorForTable {
 
     private String tableName = "";
@@ -80,10 +82,6 @@ public class ObsRecordExtractorForTable {
 
     public void setRecordList(List<Map<String, String>> recordList) {
         this.recordList = recordList;
-    }
-
-    private static String getProcessedName(String formName) {
-        return formName.replaceAll(" |-|, ","_").toLowerCase();
     }
 
     private String getPostgresCompatibleValue(String value, String dataType) {
