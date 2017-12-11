@@ -2,6 +2,7 @@ package com.bahmni.batch.bahmnianalytics;
 
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
 import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
+import com.bahmni.batch.bahmnianalytics.exports.TableMetadataGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
@@ -53,6 +54,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	public TableGeneratorStep tableGeneratorStep;
 
+	@Autowired
+	public TableMetadataGeneratorStep tableMetadataGeneratorStep;
+
 
 	@Value("${zipFolder}")
 	private Resource zipFolder;
@@ -79,8 +83,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				ObservationExportStep observationExportStep = observationExportStepFactory.getObject();
 				observationExportStep.setForm(form);
 				completeDataExport.next(observationExportStep.getStep());
-				tableGeneratorStep.createTableForForm(form);
+				tableMetadataGeneratorStep.generateTableDataForForm(form);
 		}
+		tableGeneratorStep.createTables();
 
 		return completeDataExport.end().build();
 	}

@@ -25,6 +25,9 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
     public TableGeneratorStep tableGeneratorStep;
 
     @Autowired
+    public TableMetadataGeneratorStep tableMetadataGeneratorStep;
+
+    @Autowired
     private FreeMarkerEvaluator<ObsRecordExtractorForTable> freeMarkerEvaluatorForTableRecords;
 
     BahmniForm form;
@@ -41,7 +44,7 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
 
 
     private void insertRecords(List<? extends List<Obs>> items)  throws  Exception {
-        TableData tableData = tableGeneratorStep.getTableDataForForm(this.form);
+        TableData tableData = tableMetadataGeneratorStep.getTableDataForForm(this.form);
         try {
             ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
             extractor.run(items, tableData);

@@ -5,6 +5,7 @@ import com.bahmni.batch.bahmnianalytics.helper.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class TableMetaDataGenerator {
@@ -15,6 +16,11 @@ public class TableMetaDataGenerator {
     public TableMetaDataGenerator(BahmniForm form) {
         this.form = form;
         tableData = new TableData();
+    }
+
+    public TableMetaDataGenerator(BahmniForm form, TableData tableData) {
+        this.form = form;
+        this.tableData = tableData;
     }
 
     public TableData run() {
@@ -73,6 +79,19 @@ public class TableMetaDataGenerator {
                 Constants.openMRSToPostgresDataTypeMap.get(form.getFormName().getDataType()),
                 true,
                 null));
+    }
+
+    public void addForeignKey() {
+        if (form.getParent() != null && form.getParent().getParent() != null) {
+            Concept formParentConcept = form.getParent().getFormName();
+            String formParentConceptName = formParentConcept.getName();
+            String processedName = getProcessedName(formParentConceptName);
+            String referenceColumn = "id_" + processedName;
+            List<TableColumn> filteredReferenceColumns = tableData.getColumns().stream().filter( tableColumn -> tableColumn.getName().equals(referenceColumn)).collect(Collectors.toList());
+            if(filteredReferenceColumns.size() == 0){
+                configureForeignKeyColumn();
+            }
+        }
     }
 
     public static String getProcessedName(String formName) {
