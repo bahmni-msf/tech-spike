@@ -48,12 +48,13 @@ public class ObsRecordExtractorForTable {
                 Obs obs = record.get(0);
                 String tableColumnName = tableColumn.getName();
                 if (tableColumnName.contains("id_") && recordMap.get(tableColumnName) == null) {
-                    if (tableColumn.getReference() == null) {
-                        value[0] = getPostgresCompatibleValue(obs.getId().toString(),tableColumn.getType());
-                    } else {
+                    if (tableColumn.getReference() != null && obs.getParentName() != null && tableColumnName.equals("id_"+getProcessedName(obs.getParentName()))) {
                         value[0] = getPostgresCompatibleValue(obs.getParentId().toString(),tableColumn.getType());
+                        recordMap.replace(tableColumn.getName(), value[0]);
+                    } else if(tableColumn.getReference() == null){
+                        value[0] = getPostgresCompatibleValue(obs.getId().toString(),tableColumn.getType());
+                        recordMap.replace(tableColumn.getName(), value[0]);
                     }
-                    recordMap.replace(tableColumn.getName(), value[0]);
                 }
                 else if (tableColumnName.contains("encounter") && recordMap.get(tableColumnName) == null) {
                     value[0] = getPostgresCompatibleValue(obs.getEncounterId(), tableColumn.getType());

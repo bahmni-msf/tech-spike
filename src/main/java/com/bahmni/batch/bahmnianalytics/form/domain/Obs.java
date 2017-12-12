@@ -7,6 +7,7 @@ public class Obs {
 	private Integer parentId;
 	private Concept field;
 	private String value;
+	private String parentName;
 
 	public Obs(){}
 
@@ -66,5 +67,13 @@ public class Obs {
 
 	public void setPatientId(String patientId) {
 		this.patientId = patientId;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 }

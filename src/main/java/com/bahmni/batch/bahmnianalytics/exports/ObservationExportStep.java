@@ -23,6 +23,8 @@ import java.util.Map;
 @Scope(value = "prototype")
 public class ObservationExportStep {
 
+    private static int stepNumber;
+
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
@@ -80,7 +82,8 @@ public class ObservationExportStep {
     }
 
     public String getStepName() {
-        String formName = form.getFormName().getName();
+        stepNumber++;
+        String formName = "Step-" + stepNumber + " " + form.getFormName().getName();
         return formName.substring(0, Math.min(formName.length(), 100));
     }
 }

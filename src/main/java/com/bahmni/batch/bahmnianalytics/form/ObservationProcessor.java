@@ -73,6 +73,7 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 			public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
 				Obs obs = super.mapRow(resultSet, i);
 				Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
+				obs.setParentName(resultSet.getString("parentConceptName"));
 				obs.setField(concept);
 				return obs;
 			}
@@ -92,6 +93,7 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 				public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
 					Obs obs = super.mapRow(resultSet, i);
 					Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
+					obs.setParentName(resultSet.getString("parentConceptName"));
 					obs.setField(concept);
 					return obs;
 				}

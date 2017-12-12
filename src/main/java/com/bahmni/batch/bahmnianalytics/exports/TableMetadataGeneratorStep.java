@@ -34,9 +34,10 @@ public class TableMetadataGeneratorStep {
     public void generateTableDataForForm(BahmniForm form) {
         TableData tableDataForForm = getTableDataForForm(form);
         if(tableDataForForm != null) {
-            //  tableDataForForm.
+            tableDataMap.remove(form.getFormName().getName());
             TableMetaDataGenerator generator = new TableMetaDataGenerator(form,tableDataForForm);
             generator.addForeignKey();
+            tableDataMap.put(form.getFormName().getName(),tableDataForForm);
         } else {
             TableMetaDataGenerator generator = new TableMetaDataGenerator(form);
             tableDataForForm = generator.run();

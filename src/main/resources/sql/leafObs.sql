@@ -5,9 +5,13 @@ SELECT
   o.obs_id                         AS id,
   coalesce(DATE_FORMAT(o.value_datetime, '%d/%b/%Y'), o.value_numeric, o.value_text, cv.code, cvn.concept_full_name,
            cvn.concept_short_name) AS value,
-  obs_con.concept_full_name        AS conceptName
+  obs_con.concept_full_name        AS conceptName,
+  parent_obs_con.concept_full_name AS parentConceptName
 FROM  obs o
   JOIN concept_view obs_con ON o.concept_id = obs_con.concept_id
+  LEFT OUTER JOIN obs as form_obs on form_obs.obs_id = o.obs_group_id and form_obs.voided = 0
+  LEFT OUTER JOIN obs as parent_obs on parent_obs.obs_id = form_obs.obs_group_id and form_obs.voided = 0
+  LEFT OUTER JOIN concept_view parent_obs_con ON parent_obs.concept_id = parent_obs_con.concept_id
   LEFT OUTER JOIN concept codedConcept ON o.value_coded = codedConcept.concept_id
   LEFT OUTER JOIN concept_reference_term_map_view cv
     ON cv.concept_id = codedConcept.concept_id AND cv.concept_map_type_name = 'SAME-AS' AND
