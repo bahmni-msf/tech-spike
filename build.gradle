@@ -37,6 +37,7 @@ ospackage {
 
     from("${projectDir}/resources/") {
         fileMode = 0755
+        createDirectoryEntry = true
         into "/opt/bahmni-analytics/conf"
     }
 }
@@ -74,7 +75,8 @@ buildRpm {
     dependsOn "build", "jar"
 
     requires("cronie")
-    requires('postgresql')
+    requires('postgresql92-server')
+    requires('postgresql92-contrib')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
