@@ -60,6 +60,7 @@ public class ObservationExportStepTest {
         setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
         setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
         setValuesForMemberFields(observationExportStep,"databaseObsWriterObjectFactory",obsWriterObjectFactory );
+        setValuesForMemberFields(observationExportStep,"stepNumber", 0);
     }
 
     @Test
@@ -74,9 +75,9 @@ public class ObservationExportStepTest {
         observationExportStep.setForm(form);
 
         String stepName = observationExportStep.getStepName();
-        assertEquals("Form", stepName);
+        assertEquals("Step-1 Form", stepName);
         stepName = observationExportStep.getStepName();
-        assertEquals("moreThanHundredCharacterInTheFormNamemoreThanHundredCharacterInTheFormNamemoreThanHundredCharacterIn", stepName);
+        assertEquals("Step-2 moreThanHundredCharacterInTheFormNamemoreThanHundredCharacterInTheFormNamemoreThanHundredChar", stepName);
 
     }
 
@@ -92,7 +93,7 @@ public class ObservationExportStepTest {
 
         when(form.getFormName()).thenReturn(formNameConcept);
         when(formNameConcept.getName()).thenReturn(formName);
-        when(stepBuilderFactory.get(formName)).thenReturn(stepBuilder);
+        when(stepBuilderFactory.get("Step-1 "+formName)).thenReturn(stepBuilder);
         when(stepBuilder.chunk(100)).thenReturn(simpleStepBuilder);
         when(simpleStepBuilder.reader(any())).thenReturn(simpleStepBuilder);
         when(observationProcessorFactory.getObject()).thenReturn(new ObservationProcessor());
