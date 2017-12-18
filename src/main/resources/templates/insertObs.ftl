@@ -1,9 +1,9 @@
 <@compress single_line=true>
     <#if input.recordList?size &gt; 0>
         <#list input.recordList as record>
-        INSERT INTO ${input.getTableName()} (
+        INSERT INTO "${input.getTableName()}" (
             <#list record?keys as prop>
-            ${prop}
+            "${prop}"
                 <#if record?keys?seq_index_of(prop) <= record?keys?size - 2 >,</#if>
             </#list> )
         VALUES (

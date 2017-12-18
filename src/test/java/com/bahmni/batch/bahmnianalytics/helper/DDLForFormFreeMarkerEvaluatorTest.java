@@ -60,7 +60,7 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         tableData.setName("formWithNoChildren");
         String generatedSql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", tableData);
         Assert.assertNotNull(generatedSql);
-        Assert.assertEquals("DROP TABLE IF EXISTS formWithNoChildren CASCADE;", generatedSql);
+        Assert.assertEquals("DROP TABLE IF EXISTS \"formWithNoChildren\" CASCADE;", generatedSql);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         tableData.setColumns(columns);
         String generatedSql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", tableData);
         Assert.assertNotNull(generatedSql);
-        Assert.assertEquals("DROP TABLE IF EXISTS formWithChildren CASCADE; CREATE TABLE formWithChildren( patient_id integer , encounter_id integer );", generatedSql);
+        Assert.assertEquals("DROP TABLE IF EXISTS \"formWithChildren\" CASCADE; CREATE TABLE \"formWithChildren\"( \"patient_id\" integer , \"encounter_id\" integer );", generatedSql);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         tableData.setColumns(columns);
         String generatedSql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", tableData);
         Assert.assertNotNull(generatedSql);
-        Assert.assertEquals("DROP TABLE IF EXISTS formWithChildren CASCADE; CREATE TABLE formWithChildren( patient_id integer PRIMARY KEY , encounter_id integer );", generatedSql);
+        Assert.assertEquals("DROP TABLE IF EXISTS \"formWithChildren\" CASCADE; CREATE TABLE \"formWithChildren\"( \"patient_id\" integer PRIMARY KEY , \"encounter_id\" integer );", generatedSql);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         tableData.setColumns(columns);
         String generatedSql = freeMarkerEvaluator.evaluate("ddlForForm.ftl", tableData);
         Assert.assertNotNull(generatedSql);
-        Assert.assertEquals("DROP TABLE IF EXISTS formWithChildren CASCADE; CREATE TABLE formWithChildren( patient_id integer PRIMARY KEY , encounter_id integer REFERENCES encounter (id) );", generatedSql);
+        Assert.assertEquals("DROP TABLE IF EXISTS \"formWithChildren\" CASCADE; CREATE TABLE \"formWithChildren\"( \"patient_id\" integer PRIMARY KEY , \"encounter_id\" integer REFERENCES \"encounter\" (\"id\") );", generatedSql);
     }
 
     private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
