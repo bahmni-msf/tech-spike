@@ -21,11 +21,9 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
     @Autowired
     private JdbcTemplate postgresJdbcTemplate;
 
-    @Autowired
-    public TableGeneratorStep tableGeneratorStep;
 
     @Autowired
-    public TableMetadataGeneratorStep tableMetadataGeneratorStep;
+    public FormTableMetadataGenImpl formTableMetadataGenImpl;
 
     @Autowired
     private FreeMarkerEvaluator<ObsRecordExtractorForTable> freeMarkerEvaluatorForTableRecords;
@@ -44,7 +42,7 @@ public class DatabaseObsWriter implements ItemWriter<List<Obs>> {
 
 
     private void insertRecords(List<? extends List<Obs>> items)  throws  Exception {
-        TableData tableData = tableMetadataGeneratorStep.getTableDataForForm(this.form);
+        TableData tableData = formTableMetadataGenImpl.getTableDataForForm(this.form);
         try {
             ObsRecordExtractorForTable extractor = new ObsRecordExtractorForTable(tableData.getName());
             extractor.run(items, tableData);

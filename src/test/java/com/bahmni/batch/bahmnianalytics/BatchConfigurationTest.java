@@ -2,7 +2,7 @@ package com.bahmni.batch.bahmnianalytics;
 
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
 import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
-import com.bahmni.batch.bahmnianalytics.exports.TableMetadataGeneratorStep;
+import com.bahmni.batch.bahmnianalytics.exports.FormTableMetadataGenImpl;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
@@ -68,7 +68,7 @@ public class BatchConfigurationTest {
     private TableGeneratorStep tableGeneratorStep;
 
     @Mock
-    public TableMetadataGeneratorStep tableMetadaGeneratorStep;
+    public FormTableMetadataGenImpl formTableMetadataGenImpl;
 
 
     @Before
@@ -83,7 +83,7 @@ public class BatchConfigurationTest {
         setValuesForMemberFields(batchConfiguration, "treatmentRegistrationBaseExportStep", treatmentRegistrationBaseExportStep);
         setValuesForMemberFields(batchConfiguration, "observationExportStepFactory", observationExportStepFactory);
         setValuesForMemberFields(batchConfiguration, "tableGeneratorStep", tableGeneratorStep);
-        setValuesForMemberFields(batchConfiguration, "tableMetadataGeneratorStep", tableMetadaGeneratorStep);
+        setValuesForMemberFields(batchConfiguration, "formTableMetadataGenImpl", formTableMetadataGenImpl);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class BatchConfigurationTest {
         verify(fstgObservationExportStep, times(1)).setForm(fstg);
         verify(jobFlowBuilder, times(1)).next(medicalHistoryObservationStep);
         verify(jobFlowBuilder, times(1)).next(fstgObservationStep);
-        verify(tableGeneratorStep, times(1)).createTables();
+        verify(tableGeneratorStep, times(1)).createTables(formTableMetadataGenImpl.getTableData());
     }
 
     private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {

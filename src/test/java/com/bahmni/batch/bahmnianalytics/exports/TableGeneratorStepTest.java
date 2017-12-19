@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
@@ -29,7 +28,7 @@ public class TableGeneratorStepTest {
     private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
 
     @Mock
-    private TableMetadataGeneratorStep tableMetadataGeneratorStep;
+    private FormTableMetadataGenImpl formTableMetadataGenImpl;
 
     private TableGeneratorStep tableGeneratorStep;
 
@@ -38,13 +37,12 @@ public class TableGeneratorStepTest {
         tableGeneratorStep = new TableGeneratorStep();
         setValuesForMemberFields(tableGeneratorStep, "postgresJdbcTemplate", postgresJdbcTemplate);
         setValuesForMemberFields(tableGeneratorStep, "freeMarkerEvaluatorForTables", freeMarkerEvaluatorForTables);
-        setValuesForMemberFields(tableGeneratorStep, "tableMetadataGeneratorStep", tableMetadataGeneratorStep);
     }
 
     @Test
     public void shouldNotEvaluateFTLWhenThereAreNoTables() throws Exception {
-        when(tableMetadataGeneratorStep.getTableData()).thenReturn(new ArrayList<>());
-        tableGeneratorStep.createTables();
+        when(formTableMetadataGenImpl.getTableData()).thenReturn(new ArrayList<>());
+        tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 
         verify(freeMarkerEvaluatorForTables, times(0)).evaluate(any(), any());
     }
@@ -53,11 +51,11 @@ public class TableGeneratorStepTest {
     public void shouldExecuteCreateSqlGivenTableData() throws Exception {
         TableData tableData = new TableData();
         tableData.setName("tableName");
-        when(tableMetadataGeneratorStep.getTableData()).thenReturn(Arrays.asList(tableData));
+        when(formTableMetadataGenImpl.getTableData()).thenReturn(Arrays.asList(tableData));
         String sql = "someSql";
         when(freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData)).thenReturn(sql);
 
-        tableGeneratorStep.createTables();
+        tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 
         verify(freeMarkerEvaluatorForTables, times(1)).evaluate("ddlForForm.ftl", tableData);
         verify(postgresJdbcTemplate, times(1)).execute(sql);
@@ -69,12 +67,12 @@ public class TableGeneratorStepTest {
         tableData1.setName("tableName");
         TableData tableData2 = new TableData();
         tableData2.setName("tableName");
-        when(tableMetadataGeneratorStep.getTableData()).thenReturn(Arrays.asList(tableData1,tableData2));
+        when(formTableMetadataGenImpl.getTableData()).thenReturn(Arrays.asList(tableData1,tableData2));
         String sql = "someSql";
         when(freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData1)).thenReturn(sql);
         when(freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData2)).thenReturn(sql);
 
-        tableGeneratorStep.createTables();
+        tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 
         verify(freeMarkerEvaluatorForTables, times(1)).evaluate("ddlForForm.ftl", tableData1);
         verify(freeMarkerEvaluatorForTables, times(1)).evaluate("ddlForForm.ftl", tableData2);

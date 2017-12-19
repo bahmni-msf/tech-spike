@@ -19,11 +19,7 @@ public class TableGeneratorStep {
     @Autowired
     private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
 
-    @Autowired
-    private TableMetadataGeneratorStep tableMetadataGeneratorStep;
-
-    public void createTables() {
-        List<TableData> tables = tableMetadataGeneratorStep.getTableData();
+    public void createTables(List<TableData> tables) {
         tables.forEach(tableData -> {
                     try {
                         String sql = freeMarkerEvaluatorForTables.evaluate("ddlForForm.ftl", tableData);

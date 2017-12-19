@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-public class TableMetadataGeneratorStepTest {
+public class FormTableMetadataGenImplTest {
 
     @Mock
     private TableGeneratorFactory factory;
@@ -29,12 +29,12 @@ public class TableMetadataGeneratorStepTest {
     @Mock
     private TableMetaDataGenerator generator;
 
-    private TableMetadataGeneratorStep tableMetadataGeneratorStep;
+    private FormTableMetadataGenImpl formTableMetadataGenImpl;
 
     @Before
     public void setUp() throws Exception {
-        tableMetadataGeneratorStep = new TableMetadataGeneratorStep();
-        tableMetadataGeneratorStep.setGeneratorFactory(factory);
+        formTableMetadataGenImpl = new FormTableMetadataGenImpl();
+        formTableMetadataGenImpl.setGeneratorFactory(factory);
     }
 
     @Test
@@ -44,11 +44,11 @@ public class TableMetadataGeneratorStepTest {
         TableData tableData = new TableData();
         tableData.setName("formName");
         Map<String, TableData> tableDataMap = new LinkedHashMap<>();
-        tableMetadataGeneratorStep.setTableDataMap(tableDataMap);
+        formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForNewForm(form)).thenReturn(generator);
         when(generator.run()).thenReturn(tableData);
 
-        tableMetadataGeneratorStep.generateTableDataForForm(form);
+        formTableMetadataGenImpl.generateTableDataForForm(form);
 
         assertEquals(1, tableDataMap.size());
         assertTrue(tableDataMap.keySet().contains(form.getFormName().getName()));
@@ -66,10 +66,10 @@ public class TableMetadataGeneratorStepTest {
         tableData.setColumns(Arrays.asList(tableColumn));
         Map<String, TableData> tableDataMap = new LinkedHashMap<>();
         tableDataMap.put(formName, tableData);
-        tableMetadataGeneratorStep.setTableDataMap(tableDataMap);
+        formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForExistingForm(form, tableData)).thenReturn(generator);
 
-        tableMetadataGeneratorStep.generateTableDataForForm(form);
+        formTableMetadataGenImpl.generateTableDataForForm(form);
 
         verify(generator, times(1)).addForeignKey();
         assertEquals(1, tableDataMap.size());
@@ -84,10 +84,10 @@ public class TableMetadataGeneratorStepTest {
         tableDataMap.put("secondForm",new TableData());
         BahmniForm form = new BahmniForm();
         form.setFormName(new Concept(123,"firstForm",1));
-        tableMetadataGeneratorStep.setTableDataMap(tableDataMap);
+        formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForExistingForm(any(),any())).thenReturn(generator);
 
-        tableMetadataGeneratorStep.generateTableDataForForm(form);
+        formTableMetadataGenImpl.generateTableDataForForm(form);
 
         verify(generator,times(1)).addForeignKey();
         assertEquals(tableDataMap.size(),2);
