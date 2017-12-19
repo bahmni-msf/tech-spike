@@ -5,6 +5,7 @@ import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.TableMetadataGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
+import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.batch.core.Job;
@@ -78,6 +79,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				.incrementer(new RunIdIncrementer()).preventRestart()
 				.listener(listener())
 		                .flow(treatmentRegistrationBaseExportStep.getStep());
+
+        tableMetadataGeneratorStep.setGeneratorFactory(new TableGeneratorFactory());
 
 		for (BahmniForm form : forms) {
 				ObservationExportStep observationExportStep = observationExportStepFactory.getObject();

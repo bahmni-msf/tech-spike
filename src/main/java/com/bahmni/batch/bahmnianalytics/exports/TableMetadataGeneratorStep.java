@@ -1,31 +1,36 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
+import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
-import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class TableMetadataGeneratorStep {
 
-    @Autowired
-    private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
+    private Map<String, TableData> tableDataMap = new LinkedHashMap<>();
 
-    private  Map<String, TableData> tableDataMap = new LinkedHashMap<>();
-
-    private TableMetadataGeneratorStep() {
-
+    public void setTableDataMap(Map<String, TableData> tableDataMap) {
+        this.tableDataMap = tableDataMap;
     }
 
     public List<TableData> getTableData() {
         return new ArrayList<TableData>(tableDataMap.values());
     }
 
+    public void setGeneratorFactory(TableGeneratorFactory factory) {
+        this.factory = factory;
+    }
+
+    private TableGeneratorFactory factory;
+
+    private TableMetaDataGenerator generator;
 
     public TableData getTableDataForForm(BahmniForm form) {
         return tableDataMap.get(form.getFormName().getName());
@@ -33,15 +38,15 @@ public class TableMetadataGeneratorStep {
 
     public void generateTableDataForForm(BahmniForm form) {
         TableData tableDataForForm = getTableDataForForm(form);
-        if(tableDataForForm != null) {
+        if (tableDataForForm != null) {
             tableDataMap.remove(form.getFormName().getName());
-            TableMetaDataGenerator generator = new TableMetaDataGenerator(form,tableDataForForm);
+            generator = factory.getGeneratorForExistingForm(form, tableDataForForm);
             generator.addForeignKey();
-            tableDataMap.put(form.getFormName().getName(),tableDataForForm);
+            tableDataMap.put(form.getFormName().getName(), tableDataForForm);
         } else {
-            TableMetaDataGenerator generator = new TableMetaDataGenerator(form);
+            generator = factory.getGeneratorForNewForm(form);
             tableDataForForm = generator.run();
-            tableDataMap.put(form.getFormName().getName(),tableDataForForm);
+            tableDataMap.put(form.getFormName().getName(), tableDataForForm);
         }
     }
 }

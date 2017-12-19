@@ -1,9 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.util;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
-import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableColumn;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.form.domain.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,6 +10,10 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 @PrepareForTest(IOUtils.class)
@@ -29,7 +30,7 @@ public class TableMetaDataGeneratorTest {
     }
 
     @Test
-    public void shouldReturnTabbleDataForGivenFormWithNoForeignKeys() {
+    public void shouldReturnTableDataForGivenFormWithNoForeignKeys() {
         BahmniForm form = new BahmniForm();
         Concept formConcept = new Concept(1, "post-operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", null);
         form.setFormName(formConcept);
@@ -134,6 +135,46 @@ public class TableMetaDataGeneratorTest {
         assertEquals("text", transfusionCommentsColumn.getType());
         assertFalse(transfusionCommentsColumn.isPrimaryKey());
         assertNull(transfusionCommentsColumn.getReference());
+    }
+
+    @Test
+    public void shouldAddForiegnKeyOfNewFormToAlreadyExistingTableData() throws Exception {
+        BahmniForm form = new BahmniForm();
+        BahmniForm parent = new BahmniForm();
+        parent.setFormName(new Concept(123, "parent2", 1));
+        parent.setParent(new BahmniForm());
+        form.setParent(parent);
+        TableData tableData = new TableData();
+        TableColumn firstForiegnKey = new TableColumn("id_parent1", "TEXT", true, new ForeignKey("referenceColumn", "referenceTable"));
+        List<TableColumn> tableColumns = new ArrayList<>();
+        tableColumns.add(firstForiegnKey);
+        tableData.setColumns(tableColumns);
+        tableData.setName("formName");
+
+        TableMetaDataGenerator tableMetaDataGenerator = new TableMetaDataGenerator(form, tableData);
+        tableMetaDataGenerator.addForeignKey();
+
+        assertEquals("id_parent2", tableData.getColumns().get(1).getName());
+    }
+
+    @Test
+    public void shouldNotAddForiegnKeyToSameFormTwice() throws Exception {
+        BahmniForm form = new BahmniForm();
+        BahmniForm parent = new BahmniForm();
+        parent.setFormName(new Concept(123, "parent1", 1));
+        parent.setParent(new BahmniForm());
+        form.setParent(parent);
+        TableData tableData = new TableData();
+        TableColumn firstForiegnKey = new TableColumn("id_parent1", "TEXT", true, new ForeignKey("referenceColumn", "referenceTable"));
+        List<TableColumn> tableColumns = new ArrayList<>();
+        tableColumns.add(firstForiegnKey);
+        tableData.setColumns(tableColumns);
+        tableData.setName("formName");
+
+        TableMetaDataGenerator tableMetaDataGenerator = new TableMetaDataGenerator(form, tableData);
+        tableMetaDataGenerator.addForeignKey();
+
+        assertEquals(1, tableData.getColumns().size());
     }
 
 

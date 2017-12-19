@@ -1,9 +1,7 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
-import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,12 +19,8 @@ public class TableGeneratorStep {
     @Autowired
     private FreeMarkerEvaluator<TableData> freeMarkerEvaluatorForTables;
 
-     @Autowired
-     private TableMetadataGeneratorStep tableMetadataGeneratorStep;
-
-    private TableGeneratorStep() {
-
-    }
+    @Autowired
+    private TableMetadataGeneratorStep tableMetadataGeneratorStep;
 
     public void createTables() {
         List<TableData> tables = tableMetadataGeneratorStep.getTableData();
