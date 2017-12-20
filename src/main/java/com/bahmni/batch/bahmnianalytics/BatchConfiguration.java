@@ -1,9 +1,6 @@
 package com.bahmni.batch.bahmnianalytics;
 
-import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
-import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
-import com.bahmni.batch.bahmnianalytics.exports.FormTableMetadataGenImpl;
-import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
+import com.bahmni.batch.bahmnianalytics.exports.*;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
@@ -58,6 +55,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	public FormTableMetadataGenImpl formTableMetadataGenImpl;
 
+	@Autowired
+	public AsIsTableGeneratorImpl asIsTableGenerator;
+
 
 	@Value("${zipFolder}")
 	private Resource zipFolder;
@@ -81,6 +81,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		                .flow(treatmentRegistrationBaseExportStep.getStep());
 
         formTableMetadataGenImpl.setGeneratorFactory(new TableGeneratorFactory());
+        asIsTableGenerator.run();
 
 		for (BahmniForm form : forms) {
 				ObservationExportStep observationExportStep = observationExportStepFactory.getObject();
@@ -89,6 +90,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				formTableMetadataGenImpl.generateTableDataForForm(form);
 		}
 		tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
+		tableGeneratorStep.createTables(asIsTableGenerator.getTableData());
 
 		return completeDataExport.end().build();
 	}

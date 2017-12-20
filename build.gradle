@@ -62,6 +62,7 @@ dependencies {
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
     compile("org.hsqldb:hsqldb")
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+    compile "com.google.code.gson:gson:2.8.2"
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'

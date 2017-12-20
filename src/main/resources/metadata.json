@@ -1,0 +1,39 @@
+[
+  {
+    "name": "programs",
+    "columns": [
+      {
+        "name": "Name",
+        "type": "Text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "Id",
+        "type": "Integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "programs1",
+    "columns": [
+      {
+        "name": "Name",
+        "type": "Text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "Id",
+        "type": "Integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  }
+]
+
+
+
