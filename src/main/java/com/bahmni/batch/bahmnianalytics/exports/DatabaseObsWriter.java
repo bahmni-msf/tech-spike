@@ -2,7 +2,7 @@ package com.bahmni.batch.bahmnianalytics.exports;
 
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;

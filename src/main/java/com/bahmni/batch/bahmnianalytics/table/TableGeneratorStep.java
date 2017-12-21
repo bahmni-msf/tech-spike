@@ -1,7 +1,7 @@
-package com.bahmni.batch.bahmnianalytics.exports;
+package com.bahmni.batch.bahmnianalytics.table;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;

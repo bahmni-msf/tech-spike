@@ -2,8 +2,11 @@ package com.bahmni.batch.bahmnianalytics;
 
 import com.bahmni.batch.bahmnianalytics.exports.*;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
-import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.TablesExportStep;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -36,12 +39,17 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	private TreatmentRegistrationBaseExportStep treatmentRegistrationBaseExportStep;
 
+	@Autowired
+	private TablesExportStep tablesExportStep;
 
 	@Autowired
 	private FormListProcessor formListProcessor;
 
 	@Autowired
 	private ObjectFactory<ObservationExportStep> observationExportStepFactory;
+
+	@Autowired
+	private ObjectFactory<TablesExportStep> tablesExportStepObjectFactory;
 
 	@Value("${templates}")
 	private Resource freemarkerTemplateLocation;
@@ -92,6 +100,14 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 		tableGeneratorStep.createTables(asIsTableGenerator.getTableData());
 
+
+		TablesExportStep tablesExportStep = tablesExportStepObjectFactory.getObject();
+		List<TableData> tableDataList = asIsTableGenerator.getTableData();
+
+		for (TableData tableData: tableDataList) {
+			tablesExportStep.setTableData(tableData);
+			completeDataExport.next(tablesExportStep.getStep());
+		}
 		return completeDataExport.end().build();
 	}
 

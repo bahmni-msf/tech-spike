@@ -2,9 +2,7 @@ package com.bahmni.batch.bahmnianalytics.helper;
 
 import com.bahmni.batch.bahmnianalytics.exception.BatchResourceException;
 import com.bahmni.batch.bahmnianalytics.exports.ObsRecordExtractorForTable;
-import com.bahmni.batch.bahmnianalytics.form.domain.ForeignKey;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableColumn;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import freemarker.template.Configuration;
 import org.junit.Assert;
 import org.junit.Before;

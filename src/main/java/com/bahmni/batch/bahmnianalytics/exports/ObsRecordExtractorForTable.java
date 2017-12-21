@@ -1,14 +1,15 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator.getProcessedName;
+import static com.bahmni.batch.bahmnianalytics.form.FormTableMetaDataGenerator.getProcessedName;
 
 public class ObsRecordExtractorForTable {
 
@@ -37,7 +38,7 @@ public class ObsRecordExtractorForTable {
                 tableData.getColumns().forEach(tableColumn -> {
                     String tableColumnName = tableColumn.getName();
                     if (tableColumnName.equals(getProcessedName(obs.getField().getName()))) {
-                        value[0] = getPostgresCompatibleValue(obs.getValue(), tableColumn.getType());
+                        value[0] = BatchUtils.getPostgresCompatibleValue(obs.getValue(), tableColumn.getType());
                         recordMap.replace(tableColumnName, value[0]);
                     }
                 });
@@ -49,19 +50,19 @@ public class ObsRecordExtractorForTable {
                 String tableColumnName = tableColumn.getName();
                 if (tableColumnName.contains("id_") && recordMap.get(tableColumnName) == null) {
                     if (tableColumn.getReference() != null && obs.getParentName() != null && tableColumnName.equals("id_"+getProcessedName(obs.getParentName()))) {
-                        value[0] = getPostgresCompatibleValue(obs.getParentId().toString(),tableColumn.getType());
+                        value[0] = BatchUtils.getPostgresCompatibleValue(obs.getParentId().toString(),tableColumn.getType());
                         recordMap.replace(tableColumn.getName(), value[0]);
                     } else if(tableColumn.getReference() == null){
-                        value[0] = getPostgresCompatibleValue(obs.getId().toString(),tableColumn.getType());
+                        value[0] = BatchUtils.getPostgresCompatibleValue(obs.getId().toString(),tableColumn.getType());
                         recordMap.replace(tableColumn.getName(), value[0]);
                     }
                 }
                 else if (tableColumnName.contains("encounter") && recordMap.get(tableColumnName) == null) {
-                    value[0] = getPostgresCompatibleValue(obs.getEncounterId(), tableColumn.getType());
+                    value[0] = BatchUtils.getPostgresCompatibleValue(obs.getEncounterId(), tableColumn.getType());
                     recordMap.replace(tableColumnName, value[0]);
                 }
                 else if (tableColumnName.contains("patient") && recordMap.get(tableColumnName) == null) {
-                    value[0] = getPostgresCompatibleValue(obs.getPatientId(), tableColumn.getType());
+                    value[0] = BatchUtils.getPostgresCompatibleValue(obs.getPatientId(), tableColumn.getType());
                     recordMap.replace(tableColumnName, value[0]);
                 }
             });
@@ -85,16 +86,5 @@ public class ObsRecordExtractorForTable {
         this.recordList = recordList;
     }
 
-    private String getPostgresCompatibleValue(String value, String dataType) {
-        String finalValue = "";
-        switch (dataType) {
-            case "text" :
-                finalValue = "'" +  value.replaceAll("'","''") +"'"; break;
-            case "date" :
-                finalValue =  "'"+ value + "'"; break;
-            default: finalValue = value;
-        }
-        return  finalValue;
-    }
 
 }

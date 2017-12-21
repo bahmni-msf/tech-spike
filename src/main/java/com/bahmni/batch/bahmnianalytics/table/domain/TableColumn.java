@@ -1,4 +1,6 @@
-package com.bahmni.batch.bahmnianalytics.form.domain;
+package com.bahmni.batch.bahmnianalytics.table.domain;
+
+import com.bahmni.batch.bahmnianalytics.table.domain.ForeignKey;
 
 public class TableColumn {
     private String name;

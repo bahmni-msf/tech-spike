@@ -1,7 +1,8 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

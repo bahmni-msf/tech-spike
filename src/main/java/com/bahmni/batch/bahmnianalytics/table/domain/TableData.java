@@ -1,4 +1,6 @@
-package com.bahmni.batch.bahmnianalytics.form.domain;
+package com.bahmni.batch.bahmnianalytics.table.domain;
+
+import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
 
 import java.util.ArrayList;
 import java.util.List;

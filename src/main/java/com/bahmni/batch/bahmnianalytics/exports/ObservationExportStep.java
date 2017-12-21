@@ -23,7 +23,7 @@ import java.util.Map;
 @Scope(value = "prototype")
 public class ObservationExportStep {
 
-    private static int stepNumber;
+    public static int stepNumber;
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;

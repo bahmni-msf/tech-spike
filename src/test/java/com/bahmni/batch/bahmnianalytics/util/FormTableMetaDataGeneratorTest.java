@@ -1,6 +1,10 @@
 package com.bahmni.batch.bahmnianalytics.util;
 
 import com.bahmni.batch.bahmnianalytics.form.domain.*;
+import com.bahmni.batch.bahmnianalytics.form.FormTableMetaDataGenerator;
+import com.bahmni.batch.bahmnianalytics.table.domain.ForeignKey;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,15 +16,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 @PrepareForTest(IOUtils.class)
 @RunWith(PowerMockRunner.class)
-public class TableMetaDataGeneratorTest {
+public class FormTableMetaDataGeneratorTest {
 
-    private TableMetaDataGenerator tableMetaDataGenerator;
+    private FormTableMetaDataGenerator formTableMetaDataGenerator;
     @Rule
     ExpectedException expectedException = ExpectedException.none();
 
@@ -38,8 +41,8 @@ public class TableMetaDataGeneratorTest {
         form.addField(new Concept(2, "APN Anaesthesia start time", "Datetime", 0, "APN Anaesthesia start time", formConcept));
         form.addField(new Concept(3, "APN Anaesthesia end time", "Datetime", 0, "APN Anaesthesia end time", formConcept));
 
-        tableMetaDataGenerator = new TableMetaDataGenerator(form);
-        TableData tableData = tableMetaDataGenerator.run();
+        formTableMetaDataGenerator = new FormTableMetaDataGenerator(form);
+        TableData tableData = formTableMetaDataGenerator.run();
 
         assertNotNull(tableData);
         assertEquals("post_operative_anaesthesia_note", tableData.getName());
@@ -91,8 +94,8 @@ public class TableMetaDataGeneratorTest {
         transfusionForm.addField(new Concept(2, "Blood transfusion", "Text", 0, "Blood transfusion", transfusionConcept));
         transfusionForm.addField(new Concept(3, "Intra-operative transfusion related reaction comments", "Text", 0, "Intra-operative transfusion related reaction comments", transfusionConcept));
 
-        tableMetaDataGenerator = new TableMetaDataGenerator(transfusionForm);
-        TableData tableData = tableMetaDataGenerator.run();
+        formTableMetaDataGenerator = new FormTableMetaDataGenerator(transfusionForm);
+        TableData tableData = formTableMetaDataGenerator.run();
 
         assertNotNull(tableData);
         assertEquals("transfusion", tableData.getName());
@@ -151,8 +154,8 @@ public class TableMetaDataGeneratorTest {
         tableData.setColumns(tableColumns);
         tableData.setName("formName");
 
-        TableMetaDataGenerator tableMetaDataGenerator = new TableMetaDataGenerator(form, tableData);
-        tableMetaDataGenerator.addForeignKey();
+        FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form, tableData);
+        formTableMetaDataGenerator.addForeignKey();
 
         assertEquals("id_parent2", tableData.getColumns().get(1).getName());
     }
@@ -171,8 +174,8 @@ public class TableMetaDataGeneratorTest {
         tableData.setColumns(tableColumns);
         tableData.setName("formName");
 
-        TableMetaDataGenerator tableMetaDataGenerator = new TableMetaDataGenerator(form, tableData);
-        tableMetaDataGenerator.addForeignKey();
+        FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form, tableData);
+        formTableMetaDataGenerator.addForeignKey();
 
         assertEquals(1, tableData.getColumns().size());
     }

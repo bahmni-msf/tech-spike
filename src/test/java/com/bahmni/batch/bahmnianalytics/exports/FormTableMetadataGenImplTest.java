@@ -1,11 +1,11 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableColumn;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
-import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.form.FormTableMetaDataGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class FormTableMetadataGenImplTest {
     private TableGeneratorFactory factory;
 
     @Mock
-    private TableMetaDataGenerator generator;
+    private FormTableMetaDataGenerator generator;
 
     private FormTableMetadataGenImpl formTableMetadataGenImpl;
 

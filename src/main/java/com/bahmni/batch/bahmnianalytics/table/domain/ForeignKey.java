@@ -1,4 +1,4 @@
-package com.bahmni.batch.bahmnianalytics.form.domain;
+package com.bahmni.batch.bahmnianalytics.table.domain;
 
 public class ForeignKey {
     private String referenceColumn;

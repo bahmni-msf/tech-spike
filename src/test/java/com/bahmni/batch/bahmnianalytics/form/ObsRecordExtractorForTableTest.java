@@ -2,6 +2,9 @@ package com.bahmni.batch.bahmnianalytics.form;
 
 import com.bahmni.batch.bahmnianalytics.exports.ObsRecordExtractorForTable;
 import com.bahmni.batch.bahmnianalytics.form.domain.*;
+import com.bahmni.batch.bahmnianalytics.table.domain.ForeignKey;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

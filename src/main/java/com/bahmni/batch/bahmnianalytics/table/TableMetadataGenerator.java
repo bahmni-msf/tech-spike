@@ -1,6 +1,6 @@
-package com.bahmni.batch.bahmnianalytics.exports;
+package com.bahmni.batch.bahmnianalytics.table;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 
 import java.util.List;
 

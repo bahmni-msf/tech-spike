@@ -1,6 +1,7 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.TableMetadataGenerator;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;

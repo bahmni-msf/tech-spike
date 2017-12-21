@@ -1,8 +1,8 @@
 package com.bahmni.batch.bahmnianalytics.helper;
 
 import com.bahmni.batch.bahmnianalytics.exception.BatchResourceException;
-import com.bahmni.batch.bahmnianalytics.exports.ObsRecordExtractorForTable;
 import com.bahmni.batch.bahmnianalytics.form.domain.*;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import freemarker.template.Configuration;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,10 +12,6 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 

@@ -33,4 +33,15 @@ public class BatchUtils {
 		return conceptNamesSet;
 	}
 
+	public static String getPostgresCompatibleValue(String value, String dataType) {
+		String finalValue = "";
+		switch (dataType) {
+			case "text" :
+				finalValue = "'" +  value.replaceAll("'","''") +"'"; break;
+			case "date" :
+				finalValue =  "'"+ value + "'"; break;
+			default: finalValue = value;
+		}
+		return  finalValue;
+	}
 }

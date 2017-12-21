@@ -1,9 +1,11 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.form.TableGeneratorFactory;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
-import com.bahmni.batch.bahmnianalytics.form.domain.TableData;
-import com.bahmni.batch.bahmnianalytics.util.TableMetaDataGenerator;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.table.TableMetadataGenerator;
+import com.bahmni.batch.bahmnianalytics.form.FormTableMetaDataGenerator;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,8 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Primary
 @Component("FormTableMetadataGenImpl")
-public class FormTableMetadataGenImpl implements TableMetadataGenerator{
+public class FormTableMetadataGenImpl implements TableMetadataGenerator {
 
     private Map<String, TableData> tableDataMap = new LinkedHashMap<>();
 
@@ -30,7 +33,7 @@ public class FormTableMetadataGenImpl implements TableMetadataGenerator{
 
     private TableGeneratorFactory factory;
 
-    private TableMetaDataGenerator generator;
+    private FormTableMetaDataGenerator generator;
 
     public TableData getTableDataForForm(BahmniForm form) {
         return tableDataMap.get(form.getFormName().getName());

@@ -1,11 +1,13 @@
 package com.bahmni.batch.bahmnianalytics;
 
+import com.bahmni.batch.bahmnianalytics.exports.AsIsTableGeneratorImpl;
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
-import com.bahmni.batch.bahmnianalytics.exports.TableGeneratorStep;
+import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
 import com.bahmni.batch.bahmnianalytics.exports.FormTableMetadataGenImpl;
 import com.bahmni.batch.bahmnianalytics.exports.TreatmentRegistrationBaseExportStep;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
+import com.bahmni.batch.bahmnianalytics.table.TablesExportStep;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.apache.commons.io.FileUtils;
@@ -35,6 +37,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -68,6 +71,12 @@ public class BatchConfigurationTest {
     private TableGeneratorStep tableGeneratorStep;
 
     @Mock
+    private AsIsTableGeneratorImpl asIsTableGenerator;
+
+    @Mock
+    private ObjectFactory<TablesExportStep> tablesExportStepObjectFactory;
+
+    @Mock
     public FormTableMetadataGenImpl formTableMetadataGenImpl;
 
 
@@ -84,6 +93,8 @@ public class BatchConfigurationTest {
         setValuesForMemberFields(batchConfiguration, "observationExportStepFactory", observationExportStepFactory);
         setValuesForMemberFields(batchConfiguration, "tableGeneratorStep", tableGeneratorStep);
         setValuesForMemberFields(batchConfiguration, "formTableMetadataGenImpl", formTableMetadataGenImpl);
+        setValuesForMemberFields(batchConfiguration, "asIsTableGenerator", asIsTableGenerator);
+        setValuesForMemberFields(batchConfiguration, "tablesExportStepObjectFactory", tablesExportStepObjectFactory);
     }
 
     @Test
@@ -143,7 +154,8 @@ public class BatchConfigurationTest {
         verify(fstgObservationExportStep, times(1)).setForm(fstg);
         verify(jobFlowBuilder, times(1)).next(medicalHistoryObservationStep);
         verify(jobFlowBuilder, times(1)).next(fstgObservationStep);
-        verify(tableGeneratorStep, times(1)).createTables(formTableMetadataGenImpl.getTableData());
+        verify(formTableMetadataGenImpl, times(1)).getTableData();
+        verify(tableGeneratorStep, atLeastOnce()).createTables(formTableMetadataGenImpl.getTableData());
     }
 
     private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {

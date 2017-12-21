@@ -1,24 +1,27 @@
-package com.bahmni.batch.bahmnianalytics.util;
+package com.bahmni.batch.bahmnianalytics.form;
 
 import com.bahmni.batch.bahmnianalytics.form.domain.*;
 import com.bahmni.batch.bahmnianalytics.helper.Constants;
+import com.bahmni.batch.bahmnianalytics.table.domain.ForeignKey;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class TableMetaDataGenerator {
+public class FormTableMetaDataGenerator {
 
     private BahmniForm form;
     private TableData tableData;
 
-    public TableMetaDataGenerator(BahmniForm form) {
+    public FormTableMetaDataGenerator(BahmniForm form) {
         this.form = form;
         tableData = new TableData();
     }
 
-    public TableMetaDataGenerator(BahmniForm form, TableData tableData) {
+    public FormTableMetaDataGenerator(BahmniForm form, TableData tableData) {
         this.form = form;
         this.tableData = tableData;
     }
