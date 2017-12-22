@@ -100,11 +100,10 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 		tableGeneratorStep.createTables(asIsTableGenerator.getTableData());
 
-
-		TablesExportStep tablesExportStep = tablesExportStepObjectFactory.getObject();
 		List<TableData> tableDataList = asIsTableGenerator.getTableData();
 
 		for (TableData tableData: tableDataList) {
+			TablesExportStep tablesExportStep = tablesExportStepObjectFactory.getObject();
 			tablesExportStep.setTableData(tableData);
 			completeDataExport.next(tablesExportStep.getStep());
 		}

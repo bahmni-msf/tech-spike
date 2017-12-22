@@ -8,6 +8,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
@@ -22,6 +23,7 @@ import java.util.Map;
 import static com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep.stepNumber;
 
 @Component
+@Scope(value = "prototype")
 public class TablesExportStep {
 
     @Autowired

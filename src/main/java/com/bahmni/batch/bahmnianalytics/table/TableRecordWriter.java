@@ -5,6 +5,7 @@ import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Scope(value = "prototype")
 class TableRecordWriter implements ItemWriter<Map<String, Object>> {
 
     @Qualifier("postgresJdbcTemplate")
