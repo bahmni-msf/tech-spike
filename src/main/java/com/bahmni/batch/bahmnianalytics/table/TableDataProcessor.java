@@ -17,7 +17,7 @@ public class TableDataProcessor implements ItemProcessor<Map<String, Object>, Ma
     public Map<String, Object> process(Map<String, Object> item) throws Exception {
         Map<String, Object> processedMap = item.entrySet().stream().collect(
             Collectors.toMap(p -> p.getKey(),
-                p -> getProcessedValue(p.getKey(), p.getValue().toString())));
+                p -> getProcessedValue(p.getKey(), p.getValue())));
         return processedMap;
     }
 
@@ -29,7 +29,10 @@ public class TableDataProcessor implements ItemProcessor<Map<String, Object>, Ma
         this.tableData = tableData;
     }
 
-    private String getProcessedValue(String key, String value) {
+    private String getProcessedValue(String key, Object value) {
+        if (value == null) {
+            return "";
+        }
         Optional<TableColumn> col = tableData.getColumns().stream().filter(column -> column.getName().equals(key)).findFirst();
         return BatchUtils.getPostgresCompatibleValue(value.toString(), col.get().getType());
     }

@@ -9,7 +9,13 @@
         "reference": null
       },
       {
-        "name": "name",
+        "name": "concept_name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "outcome_concept_name",
         "type": "text",
         "isPrimaryKey": false,
         "reference": null
