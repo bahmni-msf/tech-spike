@@ -1,6 +1,7 @@
 package com.bahmni.batch.bahmnianalytics.table;
 
 
+import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.springframework.batch.core.Step;
@@ -38,6 +39,9 @@ public class TablesExportStep {
     @Autowired
     ResourceLoader resourceLoader;
 
+    @Autowired
+    private FreeMarkerEvaluator<TableData> tableRecordHolderFreeMarkerEvaluator;
+
     TableData tableData;
 
     public Step getStep() {
@@ -50,8 +54,7 @@ public class TablesExportStep {
     }
 
     private JdbcCursorItemReader<Map<String, Object>> getReader() {
-        Resource sqlResource = resourceLoader.getResource("classpath:sql/" + tableData.getName() + ".sql");
-        String sql = BatchUtils.convertResourceOutputToString(sqlResource);
+        String sql = tableRecordHolderFreeMarkerEvaluator.evaluate("reader.ftl", tableData);
         JdbcCursorItemReader<Map<String, Object>> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
         reader.setSql(sql);

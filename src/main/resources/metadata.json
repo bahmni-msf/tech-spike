@@ -9,14 +9,14 @@
         "reference": null
       },
       {
-        "name": "concept_name",
-        "type": "text",
+        "name": "concept_id",
+        "type": "integer",
         "isPrimaryKey": false,
         "reference": null
       },
       {
-        "name": "outcome_concept_name",
-        "type": "text",
+        "name": "outcomes_concept_id",
+        "type": "integer",
         "isPrimaryKey": false,
         "reference": null
       },
