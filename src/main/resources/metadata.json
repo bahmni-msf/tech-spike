@@ -83,6 +83,366 @@
         "reference": null
       }
     ]
+  },
+  {
+    "name": "program_workflow",
+    "columns": [
+      {
+        "name": "program_workflow_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "program_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "program",
+          "referenceColumn": "program_id"
+        }
+      },
+      {
+        "name": "concept_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "program_workflow_state",
+    "columns": [
+      {
+        "name": "program_workflow_state_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "program_workflow_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "program_workflow",
+          "referenceColumn": "program_workflow_id"
+        }
+      },
+      {
+        "name": "concept_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "initial",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "terminal",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "patient_state",
+    "columns": [
+      {
+        "name": "patient_state_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "patient_program_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "patient_program",
+          "referenceColumn": "patient_program_id"
+        }
+      },
+      {
+        "name": "state",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "program_workflow_state",
+          "referenceColumn": "program_workflow_state_id"
+        }
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "episode",
+    "columns": [
+      {
+        "name": "episode_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "encounter_type",
+    "columns": [
+      {
+        "name": "encounter_type_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "encounter_role",
+    "columns": [
+      {
+        "name": "encounter_role_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "encounter",
+    "columns": [
+      {
+        "name": "encounter_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "encounter_type",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "encounter_type",
+          "referenceColumn": "encounter_type_id"
+        }
+      },
+      {
+        "name": "patient_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "location_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "form_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "encounter_datetime",
+        "type": "timestamp",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "encounter_provider",
+    "columns": [
+      {
+        "name": "encounter_provider_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "encounter_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "encounter",
+          "referenceColumn": "encounter_id"
+        }
+      },
+      {
+        "name": "provider_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "encounter_role_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "encounter_role",
+          "referenceColumn": "encounter_role_id"
+        }
+      }
+    ]
+  },
+  {
+    "name": "episode_patient_program",
+    "columns": [
+      {
+        "name": "episode_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "episode",
+          "referenceColumn": "episode_id"
+        }
+      },
+      {
+        "name": "patient_program_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "patient_program",
+          "referenceColumn": "patient_program_id"
+        }
+      }
+    ]
+  },
+  {
+    "name": "episode_encounter",
+    "columns": [
+      {
+        "name": "episode_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "episode",
+          "referenceColumn": "episode_id"
+        }
+      },
+      {
+        "name": "encounter_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "encounter",
+          "referenceColumn": "encounter_id"
+        }
+      }
+    ]
+  },
+  {
+    "name": "visit_type",
+    "columns": [
+      {
+        "name": "visit_type_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "visit",
+    "columns": [
+      {
+        "name": "visit_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "patient_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "visit_type_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "visit_type",
+          "referenceColumn": "visit_type_id"
+        }
+      },
+      {
+        "name": "date_started",
+        "type": "timestamp",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "date_stopped",
+        "type": "timestamp",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "indication_concept_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "location_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
   }
 ]
 
