@@ -39,7 +39,11 @@ public class BatchUtils {
 			case "text" :
 				finalValue = "'" +  value.replaceAll("'","''") +"'"; break;
 			case "date" :
-				finalValue =  "'"+ value + "'"; break;
+				finalValue = "'" + value + "'";
+				break;
+			case "timestamp":
+				finalValue =  "'"+ value + "'";
+				break;
 			default: finalValue = value;
 		}
 		return  finalValue;
