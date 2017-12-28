@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics;
 
+import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributeFlattener;
 import com.bahmni.batch.bahmnianalytics.exports.AsIsTableGeneratorImpl;
 import com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep;
 import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
@@ -80,6 +81,10 @@ public class BatchConfigurationTest {
     public FormTableMetadataGenImpl formTableMetadataGenImpl;
 
 
+    @Mock
+    public AttributeFlattener attributeFlattener;
+
+
     @Before
     public void setUp() throws Exception {
         mockStatic(FileUtils.class);
@@ -95,6 +100,7 @@ public class BatchConfigurationTest {
         setValuesForMemberFields(batchConfiguration, "formTableMetadataGenImpl", formTableMetadataGenImpl);
         setValuesForMemberFields(batchConfiguration, "asIsTableGenerator", asIsTableGenerator);
         setValuesForMemberFields(batchConfiguration, "tablesExportStepObjectFactory", tablesExportStepObjectFactory);
+        setValuesForMemberFields(batchConfiguration, "attributeFlattener", attributeFlattener);
     }
 
     @Test
