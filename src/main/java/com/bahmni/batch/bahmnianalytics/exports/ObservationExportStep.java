@@ -19,11 +19,11 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
+import static com.bahmni.batch.bahmnianalytics.util.BatchUtils.stepNumber;
+
 @Component
 @Scope(value = "prototype")
 public class ObservationExportStep {
-
-    public static int stepNumber;
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;

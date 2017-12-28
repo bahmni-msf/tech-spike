@@ -3,25 +3,20 @@ package com.bahmni.batch.bahmnianalytics.table;
 
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
-import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.stereotype.Component;
-import sun.misc.IOUtils;
-import sun.nio.ch.IOUtil;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.Map;
 
-import static com.bahmni.batch.bahmnianalytics.exports.ObservationExportStep.stepNumber;
+import static com.bahmni.batch.bahmnianalytics.util.BatchUtils.stepNumber;
 
 @Component
 @Scope(value = "prototype")

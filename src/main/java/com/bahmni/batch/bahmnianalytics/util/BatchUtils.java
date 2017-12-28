@@ -11,7 +11,9 @@ import java.util.List;
 
 public class BatchUtils {
 
-	public static String convertResourceOutputToString(Resource resource){
+    public static int stepNumber;
+
+    public static String convertResourceOutputToString(Resource resource){
 		try(InputStream is = resource.getInputStream()) {
 			return IOUtils.toString(is);
 		}

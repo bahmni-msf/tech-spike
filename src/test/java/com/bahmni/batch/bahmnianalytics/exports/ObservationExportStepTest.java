@@ -58,7 +58,7 @@ public class ObservationExportStepTest {
         setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
         setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
         setValuesForMemberFields(observationExportStep,"databaseObsWriterObjectFactory",obsWriterObjectFactory );
-        setValuesForMemberFields(observationExportStep,"stepNumber", 0);
+        BatchUtils.stepNumber = 0;
     }
 
     @Test
