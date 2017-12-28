@@ -9,14 +9,14 @@
         "reference": null
       },
       {
-        "name": "concept_id",
-        "type": "integer",
+        "name": "concept_name",
+        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       },
       {
-        "name": "outcomes_concept_id",
-        "type": "integer",
+        "name": "outcomes_concept_name",
+        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       },
@@ -103,8 +103,8 @@
         }
       },
       {
-        "name": "concept_id",
-        "type": "integer",
+        "name": "concept_name",
+        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       }
@@ -129,8 +129,8 @@
         }
       },
       {
-        "name": "concept_id",
-        "type": "integer",
+        "name": "concept_name",
+        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       },
@@ -431,8 +431,8 @@
         "reference": null
       },
       {
-        "name": "indication_concept_id",
-        "type": "integer",
+        "name": "indication_concept_name",
+        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       },

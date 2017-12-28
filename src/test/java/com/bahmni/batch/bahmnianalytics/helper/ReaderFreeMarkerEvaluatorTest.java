@@ -67,7 +67,7 @@ public class ReaderFreeMarkerEvaluatorTest {
 
         String sql = freeMarkerEvaluator.evaluate(templateName, tableData);
 
-        assertEquals("SELECT columnName FROM tableName;", sql);
+        assertEquals("SELECT tableName.columnName FROM tableName;", sql);
     }
 
     @Test
@@ -81,8 +81,20 @@ public class ReaderFreeMarkerEvaluatorTest {
 
         String sql = freeMarkerEvaluator.evaluate(templateName, tableData);
 
-        assertEquals("SELECT columnOne , columnTwo FROM tableName;", sql);
+        assertEquals("SELECT tableName.columnOne , tableName.columnTwo FROM tableName;", sql);
     }
+    @Test
+    public void shouldTransformTableWithColumnConceptIDToConceptName() throws Exception {
+        String templateName = "reader.ftl";
+        TableData tableData = new TableData();
+        tableData.setName("tableName");
+        TableColumn tableColumn = new TableColumn("concept_name", "text", false, null);
+        tableData.setColumns(Arrays.asList(tableColumn));
+        String sql = freeMarkerEvaluator.evaluate(templateName, tableData);
+
+        assertEquals("SELECT (SELECT cn.name FROM concept_name cn WHERE cn.concept_id = tableName.concept_id AND cn.concept_name_type = 'FULLY_SPECIFIED') as concept_name FROM tableName;", sql);
+    }
+
 
     private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
         Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
