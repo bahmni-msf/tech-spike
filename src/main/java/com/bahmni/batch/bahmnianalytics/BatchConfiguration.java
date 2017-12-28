@@ -1,5 +1,7 @@
 package com.bahmni.batch.bahmnianalytics;
 
+import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributeFlattener;
+import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributesModel;
 import com.bahmni.batch.bahmnianalytics.exports.*;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
 import com.bahmni.batch.bahmnianalytics.table.TableGeneratorFactory;
@@ -66,6 +68,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	public AsIsTableGeneratorImpl asIsTableGenerator;
 
+	@Autowired
+	private AttributeFlattener attributeFlattener;
+
 
 	@Value("${zipFolder}")
 	private Resource zipFolder;
@@ -107,6 +112,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 			tablesExportStep.setTableData(tableData);
 			completeDataExport.next(tablesExportStep.getStep());
 		}
+
+		flatAttributes();
+
 		return completeDataExport.end().build();
 	}
 
@@ -119,6 +127,10 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 		freemarkerTemplateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
 		return freemarkerTemplateConfig;
+	}
+
+	private  void flatAttributes() {
+		tableGeneratorStep.createTables(attributeFlattener.getTableData());
 	}
 
 	@PreDestroy

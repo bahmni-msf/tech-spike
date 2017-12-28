@@ -1,0 +1,21 @@
+[
+  {
+    "attribute_type_table_name" : "visit_attribute_type",
+    "attribute_table_name" : "visit_attribute",
+    "" : "name",
+    "tableData": {
+      "name": "visit_attributes",
+      "columns": [
+        {
+          "name": "visit_id",
+          "type": "integer",
+          "isPrimaryKey": true,
+          "reference": {
+            "referenceTable": "visit",
+            "referenceColumn": "visit_id"
+          }
+        }
+      ]
+    }
+  }
+]
