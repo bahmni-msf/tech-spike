@@ -136,13 +136,13 @@
       },
       {
         "name": "initial",
-        "type": "integer",
+        "type": "boolean",
         "isPrimaryKey": false,
         "reference": null
       },
       {
         "name": "terminal",
-        "type": "integer",
+        "type": "boolean",
         "isPrimaryKey": false,
         "reference": null
       }
