@@ -81,4 +81,45 @@ public class BatchUtilsTest {
 
         BatchUtils.convertResourceOutputToString(classPathResource);
     }
+
+    @Test
+    public void shouldReturnPostgresCompatibleValueForDataTypeText() throws Exception {
+        String value = "some text";
+        String typeText = "text";
+
+        String postgresCompatibleValue = BatchUtils.getPostgresCompatibleValue(value, typeText);
+
+        assertEquals("'some text'", postgresCompatibleValue);
+    }
+
+    @Test
+    public void shouldReturnPostgresCompatibleValueForDataTypeDate() throws Exception {
+        String value = "12/12/2017";
+        String typeDate = "date";
+
+        String postgresCompatibleValue = BatchUtils.getPostgresCompatibleValue(value, typeDate);
+
+        assertEquals("'12/12/2017'", postgresCompatibleValue);
+    }
+
+    @Test
+    public void shouldReturnPostgresCompatibleValueForDataTypeTimestamp() throws Exception {
+        String value = "2015-01-22 00:00:00.0";
+        String typeTimestamp = "timestamp";
+
+        String postgresCompatibleValue = BatchUtils.getPostgresCompatibleValue(value, typeTimestamp);
+
+        assertEquals("'2015-01-22 00:00:00.0'", postgresCompatibleValue);
+    }
+
+    @Test
+    public void shouldReturnSameValueForAnyOtherDataTypes() throws Exception {
+        String value = "some value";
+        String otherDatatype = "otherDataType";
+
+        String postgresCompatibleValue = BatchUtils.getPostgresCompatibleValue(value, otherDatatype);
+
+        assertEquals(value, postgresCompatibleValue);
+    }
+
 }
