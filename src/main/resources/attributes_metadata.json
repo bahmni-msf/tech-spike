@@ -2,7 +2,7 @@
   {
     "attribute_type_table_name" : "visit_attribute_type",
     "attribute_table_name" : "visit_attribute",
-    "" : "name",
+    "attribute_type_pivot_column_name" : "name",
     "tableData": {
       "name": "visit_attributes",
       "columns": [
