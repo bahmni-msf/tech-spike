@@ -120,6 +120,35 @@ public class ObsRecordExtractorForTableTest {
     }
 
     @Test
+    public void shouldGiveRecordsGivenTableDataAndBothFormLevelAndLeafObs() {
+        TableData tableData = new TableData();
+        tableData.setName("tableName");
+        TableColumn column1 = new TableColumn("id_parent", "integer", false,
+                new ForeignKey("id_parent", "parent1"));
+        tableData.setColumns(Arrays.asList(column1));
+
+        Obs obs1 = new Obs();
+        obs1.setEncounterId("121");
+        obs1.setId(122);
+        obs1.setParentId(123);
+        obs1.setField(new Concept(222, "second", 0));
+        obs1.setParentName("super parent");
+
+        Obs obs2 = new Obs();
+        obs2.setEncounterId("121");
+        obs2.setId(122);
+        obs2.setParentId(123);
+        obs2.setField(new Concept(222, "second", 0));
+        obs2.setParentName("parent");
+
+        obsRecordExtractorForTable.run(Arrays.asList(Arrays.asList(obs1, obs2)), tableData);
+
+        assertNotNull(obsRecordExtractorForTable.getRecordList());
+        assertThat(obsRecordExtractorForTable.getRecordList().size(), is(1));
+        assertEquals("123", obsRecordExtractorForTable.getRecordList().get(0).get("id_parent"));
+    }
+
+    @Test
     public void shouldGiveRecordsGivenTableDataWithEncounterId() throws Exception {
         TableData tableData = new TableData();
         tableData.setName("tableName");
