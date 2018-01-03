@@ -74,7 +74,8 @@ public class TablesExportStep {
 
     protected String getStepName() {
         stepNumber++;
-        String formName = "Step-" + stepNumber + " " + tableData.getName();
+        String tableName = getTableData() !=null ? getTableData().getName() : null;
+        String formName = "Step-" + stepNumber + " " + tableName;
         return formName.substring(0, Math.min(formName.length(), 100));
     }
 

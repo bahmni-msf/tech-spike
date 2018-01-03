@@ -52,7 +52,8 @@ public class AttributeTableExportStep  extends TablesExportStep {
     @Override
     public String getStepName() {
         stepNumber++;
-        String formName = "Step-" + stepNumber + " " + attributesModel.getTableData().getName();
+        String tableName = getTableData() != null ? getTableData().getName() : null;
+        String formName = "Step-" + stepNumber + " " + tableName;
         return formName.substring(0, Math.min(formName.length(), 100));
     }
 
