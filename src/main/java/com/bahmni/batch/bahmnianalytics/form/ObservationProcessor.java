@@ -3,6 +3,7 @@ package com.bahmni.batch.bahmnianalytics.form;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
+import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,15 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 	@Autowired
 	private FormFieldTransformer formFieldTransformer;
 
+	@Autowired
+	private ObsService obsService;
+
 	@Override
 	public List<Obs> process(Map<String,Object> obsRow) throws Exception {
 		List<Integer> allChildObsIds = new ArrayList<>();
+		List<Concept> allMultiSelectConcepts = obsService.getAllMultiSelectConcepts();
 
-		if (form.getFormName().getIsSet() == 1) {
+		if (form.getFormName().getIsSet() == 1 || allMultiSelectConcepts.contains(form.getFormName())) {
 			retrieveChildObsIds(allChildObsIds, Arrays.asList((Integer)obsRow.get("obs_id")));
 		}
 		else
