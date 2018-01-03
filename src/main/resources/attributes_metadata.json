@@ -3,6 +3,8 @@
     "attribute_type_table_name" : "visit_attribute_type",
     "attribute_table_name" : "visit_attribute",
     "attribute_type_pivot_column_name" : "name",
+    "value_table_joining_id" :"attribute_type_id",
+    "type_table_joining_id" :"visit_attribute_type_id",
     "tableData": {
       "name": "visit_attributes",
       "columns": [
@@ -13,6 +15,27 @@
           "reference": {
             "referenceTable": "visit",
             "referenceColumn": "visit_id"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attribute_type_table_name" : "program_attribute_type",
+    "attribute_table_name" : "patient_program_attribute",
+    "attribute_type_pivot_column_name" : "name",
+    "value_table_joining_id" :"attribute_type_id",
+    "type_table_joining_id" :"program_attribute_type_id",
+    "tableData": {
+      "name": "program_attributes",
+      "columns": [
+        {
+          "name": "patient_program_id",
+          "type": "integer",
+          "isPrimaryKey": true,
+          "reference": {
+            "referenceTable": "patient_program",
+            "referenceColumn": "patient_program_id"
           }
         }
       ]
