@@ -4,6 +4,7 @@ import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributeFlattener;
 import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributesModel;
 import com.bahmni.batch.bahmnianalytics.exports.*;
 import com.bahmni.batch.bahmnianalytics.form.FormListProcessor;
+import com.bahmni.batch.bahmnianalytics.table.AttributeTableExportStep;
 import com.bahmni.batch.bahmnianalytics.table.TableGeneratorFactory;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
@@ -52,6 +53,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 
 	@Autowired
 	private ObjectFactory<TablesExportStep> tablesExportStepObjectFactory;
+
+	@Autowired
+	private ObjectFactory<AttributeTableExportStep> attributeTableExportStepObjectFactory;
 
 	@Value("${templates}")
 	private Resource freemarkerTemplateLocation;
@@ -102,18 +106,27 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 				completeDataExport.next(observationExportStep.getStep());
 				formTableMetadataGenImpl.generateTableDataForForm(form);
 		}
+
 		tableGeneratorStep.createTables(formTableMetadataGenImpl.getTableData());
 		tableGeneratorStep.createTables(asIsTableGenerator.getTableData());
 
 		List<TableData> tableDataList = asIsTableGenerator.getTableData();
 
 		for (TableData tableData: tableDataList) {
-			TablesExportStep tablesExportStep = tablesExportStepObjectFactory.getObject();
+				TablesExportStep tablesExportStep = tablesExportStepObjectFactory.getObject();
 			tablesExportStep.setTableData(tableData);
 			completeDataExport.next(tablesExportStep.getStep());
 		}
 
 		flatAttributes();
+
+		List<AttributesModel> attributeModelList = attributeFlattener.getAttributeModelList();
+
+		for(AttributesModel attributesModel : attributeModelList){
+			AttributeTableExportStep attributeTableExportStep = attributeTableExportStepObjectFactory.getObject();
+			attributeTableExportStep.setAttributesModel(attributesModel);
+			completeDataExport.next(attributeTableExportStep.getStep());
+		}
 
 		return completeDataExport.end().build();
 	}
@@ -130,6 +143,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	}
 
 	private  void flatAttributes() {
+		attributeFlattener.run();
 		tableGeneratorStep.createTables(attributeFlattener.getTableData());
 	}
 

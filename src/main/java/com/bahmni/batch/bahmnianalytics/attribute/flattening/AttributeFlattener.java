@@ -28,11 +28,15 @@ public class AttributeFlattener implements TableMetadataGenerator {
     @Value("classpath:attributes_metadata.json")
     private Resource metadataJson;
 
+    private List<AttributesModel> attributesModelList;
+
 
     public List<TableData> getTableData() {
-        Gson g = new Gson();
-        AttributesModel[] attributesModelArray = g.fromJson(BatchUtils.convertResourceOutputToString(metadataJson),AttributesModel[].class);
-        List<AttributesModel> attributesModelList = Arrays.asList(attributesModelArray);
+        return tables;
+    }
+
+    public void run() {
+        attributesModelList = fetchAttributeModelList();
 
         attributesModelList.forEach( attributeModel -> {
             String sql =  "select " + attributeModel.getAttribute_type_pivot_column_name() + " from " + attributeModel.getAttribute_type_table_name() + ";";
@@ -41,13 +45,23 @@ public class AttributeFlattener implements TableMetadataGenerator {
             TableData tableData = attributeModel.getTableData();
 
             pivotColumns.forEach( columnTitle -> {
-                TableColumn column = new TableColumn(columnTitle,"Text",false,null);
+                TableColumn column = new TableColumn(columnTitle,"text",false,null);
                 tableData.addColumn(column);
             });
             tables.add(tableData);
         });
-
-        return  tables;
     }
+
+    private List<AttributesModel> fetchAttributeModelList(){
+        Gson g = new Gson();
+        AttributesModel[] attributesModelArray = g.fromJson(BatchUtils.convertResourceOutputToString(metadataJson),AttributesModel[].class);
+        return Arrays.asList(attributesModelArray);
+    }
+
+    public List<AttributesModel> getAttributeModelList(){
+       return  attributesModelList;
+    }
+
+
 
 }
