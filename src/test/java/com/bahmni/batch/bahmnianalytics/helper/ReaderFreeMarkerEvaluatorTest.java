@@ -42,10 +42,15 @@ public class ReaderFreeMarkerEvaluatorTest {
     @Test
     public void shouldThrowBatchExceptionIfTheFtlTemplateIsNotPresent() throws Exception {
         String templateName = "nonExisted.ftl";
+        TableData tableData = new TableData();
+        tableData.setName("tableName");
+        TableColumn tableColumn = new TableColumn("columnName", "type", true, null);
+        tableData.setColumns(Arrays.asList(tableColumn));
+
         expectedException.expect(BatchResourceException.class);
         expectedException.expectMessage("Unable to continue generating a the template with name [" + templateName + "]");
 
-        freeMarkerEvaluator.evaluate(templateName, new TableData());
+        freeMarkerEvaluator.evaluate(templateName, tableData);
     }
 
     @Test
