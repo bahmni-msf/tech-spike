@@ -55,15 +55,15 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 		List<Integer> allChildObsIds = new ArrayList<>();
 		List<Concept> allMultiSelectConcepts = obsService.getAllMultiSelectConcepts();
 
-		if (form.getFormName().getIsSet() == 1 || allMultiSelectConcepts.contains(form.getFormName())) {
+		if (form.getFormName().getIsSet() == 1) {
 			retrieveChildObsIds(allChildObsIds, Arrays.asList((Integer)obsRow.get("obs_id")));
 		}
-		else
+		else if(!allMultiSelectConcepts.contains(form.getFormName()))
 			allChildObsIds.add((Integer)obsRow.get("obs_id"));
 
-			List<Obs> obsRows = fetchAllLeafObs(allChildObsIds);
+		List<Obs> obsRows = fetchAllLeafObs(allChildObsIds);
 
-			obsRows.addAll(formObs((Integer) obsRow.get("obs_id")));
+		obsRows.addAll(formObs((Integer) obsRow.get("obs_id")));
 
 		setObsIdAndParentObsId(obsRows,(Integer)obsRow.get("obs_id"), (Integer)obsRow.get("parent_obs_id"));
 
