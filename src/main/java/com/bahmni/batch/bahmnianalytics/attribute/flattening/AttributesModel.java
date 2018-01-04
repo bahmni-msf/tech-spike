@@ -69,4 +69,8 @@ public class AttributesModel {
     public TableData getTableData() {
         return tableData;
     }
+
+    public void setTableData(TableData tableData) {
+        this.tableData = tableData;
+    }
 }

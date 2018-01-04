@@ -62,7 +62,10 @@
         "name": "patient_id",
         "type": "integer",
         "isPrimaryKey": false,
-        "reference": null
+        "reference": {
+          "referenceTable" : "patient",
+          "referenceColumn" : "patient_id"
+        }
       },
       {
         "name": "date_enrolled",
@@ -268,7 +271,10 @@
         "name": "patient_id",
         "type": "integer",
         "isPrimaryKey": false,
-        "reference": null
+        "reference": {
+          "referenceTable": "patient",
+          "referenceColumn": "patient_id"
+        }
       },
       {
         "name": "location_id",
@@ -407,7 +413,10 @@
         "name": "patient_id",
         "type": "integer",
         "isPrimaryKey": false,
-        "reference": null
+        "reference": {
+          "referenceTable": "patient",
+          "referenceColumn": "patient_id"
+        }
       },
       {
         "name": "visit_type_id",
@@ -443,8 +452,102 @@
         "reference": null
       }
     ]
+  },
+  {
+    "name": "patient",
+    "columns": [
+      {
+        "name": "patient_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "date_created",
+        "type": "timestamp",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "allergy_status",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "patient_identifier_type",
+    "columns": [
+      {
+        "name": "patient_identifier_type_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "patient_identifier",
+    "columns": [
+      {
+        "name": "patient_identifier_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "patient_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "identifier",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "identifier_type",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "patient_identifier_type",
+          "referenceColumn": "patient_identifier_type_id"
+        }
+      },
+      {
+        "name": "preferred",
+        "type": "boolean",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "location_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable": "patient",
+          "referenceColumn": "patient_id"
+        }
+      }
+    ]
   }
 ]
+
 
 
 
