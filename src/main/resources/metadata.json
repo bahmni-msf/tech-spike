@@ -41,6 +41,29 @@
     ]
   },
   {
+    "name": "patient",
+    "columns": [
+      {
+        "name": "patient_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "date_created",
+        "type": "timestamp",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "allergy_status",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
     "name": "patient_program",
     "columns": [
       {
@@ -448,29 +471,6 @@
       {
         "name": "location_id",
         "type": "integer",
-        "isPrimaryKey": false,
-        "reference": null
-      }
-    ]
-  },
-  {
-    "name": "patient",
-    "columns": [
-      {
-        "name": "patient_id",
-        "type": "integer",
-        "isPrimaryKey": true,
-        "reference": null
-      },
-      {
-        "name": "date_created",
-        "type": "timestamp",
-        "isPrimaryKey": false,
-        "reference": null
-      },
-      {
-        "name": "allergy_status",
-        "type": "text",
         "isPrimaryKey": false,
         "reference": null
       }
