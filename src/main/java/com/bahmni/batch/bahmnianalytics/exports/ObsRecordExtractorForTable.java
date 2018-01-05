@@ -56,11 +56,11 @@ public class ObsRecordExtractorForTable {
                 final String[] value = {""};
                 Obs obs = record.get(0);
                 String tableColumnName = tableColumn.getName();
-                if (tableColumnName.contains("encounter") && recordMap.get(tableColumnName) == null) {
+                if (tableColumnName.equals("encounter_id") && recordMap.get(tableColumnName) == null) {
                     value[0] = BatchUtils.getPostgresCompatibleValue(obs.getEncounterId(), tableColumn.getType());
                     recordMap.replace(tableColumnName, value[0]);
                 }
-                else if (tableColumnName.contains("patient") && recordMap.get(tableColumnName) == null) {
+                else if (tableColumnName.equals("patient_id") && recordMap.get(tableColumnName) == null) {
                     value[0] = BatchUtils.getPostgresCompatibleValue(obs.getPatientId(), tableColumn.getType());
                     recordMap.replace(tableColumnName, value[0]);
                 }
