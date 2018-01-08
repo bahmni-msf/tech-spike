@@ -539,10 +539,7 @@
         "name": "location_id",
         "type": "integer",
         "isPrimaryKey": false,
-        "reference": {
-          "referenceTable": "patient",
-          "referenceColumn": "patient_id"
-        }
+        "reference": null
       }
     ]
   }
