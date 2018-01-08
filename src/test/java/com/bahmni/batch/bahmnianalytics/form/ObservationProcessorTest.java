@@ -3,7 +3,6 @@ package com.bahmni.batch.bahmnianalytics.form;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
-import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +13,11 @@ import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -30,9 +29,6 @@ public class ObservationProcessorTest {
     @Mock
     private FormFieldTransformer formFieldTransformer;
 
-    @Mock
-    private ObsService obsService;
-
     private List<Obs> obsList;
 
     private BahmniForm form;
@@ -40,7 +36,7 @@ public class ObservationProcessorTest {
     private ObservationProcessor observationProcessor;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         initMocks(this);
 
         form = new BahmniForm();
@@ -57,7 +53,7 @@ public class ObservationProcessorTest {
         obsList.add(new Obs("123","treatment1", 1, null, new Concept(1, "systolic", 0), "120"));
         obsList.add(new Obs("123","treatment1", 1, null, new Concept(1, "diastolic", 0), "80"));
         obsList.add(new Obs("123","treatment1", 1, null, new Concept(1, "abcd", 0), "180"));
-        setValuesForMemberFields(observationProcessor, "obsService", obsService);
+
     }
 
     @Test
@@ -144,7 +140,7 @@ public class ObservationProcessorTest {
     }
 
     @Test
-    public void shouldReturnEmptyListForConceptSetWithNoFeildsAndMultiSelectsGivenNoFormLevelObs() throws Exception {
+    public void shouldReturnEmptyListWhenChildObsAndFieldIdsAreEmpty() throws Exception {
         Concept systolicConcept = new Concept(1, "systolic", 0);
         form.addField(systolicConcept);
         observationProcessor.setForm(form);
@@ -153,17 +149,11 @@ public class ObservationProcessorTest {
         List<Integer> fieldIds = new ArrayList<>();
         when(formFieldTransformer.transformFormToFieldIds(form)).thenReturn(fieldIds);
         form.getFormName().setIsSet(1);
-        when(namedParameterJdbcTemplate.query(anyString(), any(Map.class), any(ColumnMapRowMapper.class)))
-                .thenReturn(new ArrayList<>());
+        when(namedParameterJdbcTemplate.query(eq("Some Query"), any(Map.class), any(ColumnMapRowMapper.class)))
+                .thenReturn(null);
 
-        List<Obs> processedObs = observationProcessor.process(obsRow);
+        List<Obs> process = observationProcessor.process(obsRow);
 
-        Assert.assertEquals(0, processedObs.size());
-    }
-
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
+        Assert.assertEquals(0, process.size());
     }
 }
