@@ -5,6 +5,7 @@ import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,17 +14,17 @@ import java.util.List;
 @Component
 public class BahmniFormFactory {
 
-    @Value("${addMoreAndMultiSelectConcepts}")
-    private String addMoreConceptNames;
+    @Value("${multiSelectConcepts}")
+    private String multiSelectConceptNames;
 
     @Value("${ignoreConcepts}")
     private String ignoreConceptName;
 
     @Autowired
     private ObsService obsService;
+
     private List<Concept> allMultiSelectConcepts;
     private List<Concept> ignoreConcepts;
-
 
     public BahmniForm createForm(Concept concept, BahmniForm parentForm) {
         return createForm(concept, parentForm, 0);
@@ -65,14 +66,13 @@ public class BahmniFormFactory {
                 bahmniForm.addField(childConcept);
             } else {
                 bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
-
             }
         }
     }
 
     @PostConstruct
     public void postConstruct() {
-        this.allMultiSelectConcepts = obsService.getAllMultiSelectConcepts();
+        this.allMultiSelectConcepts = obsService.getConceptsByNames(multiSelectConceptNames);
         this.ignoreConcepts = obsService.getConceptsByNames(ignoreConceptName);
     }
 

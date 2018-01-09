@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class BahmniFormFactoryTest {
         multiSelectConcepts.add(new Concept(7771, "BP", 1));
         multiSelectConcepts.add(new Concept(1209, "Notes", 0));
 
-
         allConcepts = new ArrayList<>();
         allConcepts.add(new Concept(1189, "History and Examination", 1));
         allConcepts.add(new Concept(56, "Vitals", 1));
@@ -60,7 +60,6 @@ public class BahmniFormFactoryTest {
         historyAndExaminationConcepts.add(new Concept(1843, "History", 0));
         historyAndExaminationConcepts.add(new Concept(1844, "Examination", 0));
         historyAndExaminationConcepts.add(new Concept(2077, "Image", 0));
-
 
         chiefComplaintDataConcepts = new ArrayList<>();
         chiefComplaintDataConcepts.add(new Concept(7771, "BP", 1));
@@ -76,10 +75,10 @@ public class BahmniFormFactoryTest {
         otherNotesConcepts.add(new Concept(1209, "Notes", 0));
         otherNotesConcepts.add(new Concept(1210, "Notes1", 0));
 
-
         bahmniFormFactory = new BahmniFormFactory();
         bahmniFormFactory.setObsService(obsService);
-        when(obsService.getAllMultiSelectConcepts()).thenReturn(multiSelectConcepts);
+        when(obsService.getConceptsByNames(multiSelectConceptNames)).thenReturn(multiSelectConcepts);
+        setValuesForMemberFields(bahmniFormFactory, "multiSelectConceptNames", multiSelectConceptNames);
         bahmniFormFactory.postConstruct();
     }
 
@@ -93,6 +92,7 @@ public class BahmniFormFactoryTest {
         when(obsService.getChildConcepts("Other Notes")).thenReturn(otherNotesConcepts);
 
         BahmniForm bahmniForm = bahmniFormFactory.createForm(new Concept(1, "History and Examination", 1), null);
+        BahmniForm bpForm = bahmniForm.getChildren().get(0);
 
         assertNotNull(bahmniForm);
         assertEquals("History and Examination", bahmniForm.getFormName().getName());
@@ -101,40 +101,43 @@ public class BahmniFormFactoryTest {
         assertEquals("Examination", bahmniForm.getFields().get(2).getName());
         assertEquals("Image", bahmniForm.getFields().get(3).getName());
         assertEquals(1, bahmniForm.getChildren().size());
-        BahmniForm bpForm = bahmniForm.getChildren().get(0);
         assertEquals(1, bpForm.getDepthToParent());
 
-
         bahmniForm = bahmniFormFactory.createForm(new Concept(1, "Vitals", 1), null);
+
         assertNotNull(bahmniForm);
         assertEquals("Vitals", bahmniForm.getFormName().getName());
         assertEquals(vitalsConcepts, bahmniForm.getFields());
 
         bahmniForm = bahmniFormFactory.createForm(new Concept(1, "Operation Notes Template", 1), null);
-        assertNotNull(bahmniForm);
+        BahmniForm otherNotesForm = bahmniForm.getChildren().get(0);
+        BahmniForm notesForm = otherNotesForm.getChildren().get(0);
 
+        assertNotNull(bahmniForm);
         assertEquals("Operation Notes Template", bahmniForm.getFormName().getName());
         assertEquals("Anesthesia Administered", bahmniForm.getFields().get(0).getName());
         assertEquals(1, bahmniForm.getChildren().size());
-
-        BahmniForm otherNotesForm = bahmniForm.getChildren().get(0);
         assertEquals("Other Notes", otherNotesForm.getFormName().getName());
         assertEquals(otherNotesForm.getDepthToParent(), 1);
         assertEquals(otherNotesForm.getChildren().size(), 1);
         assertEquals(bahmniForm, otherNotesForm.getParent());
         assertEquals(1, otherNotesForm.getFields().size());
         assertEquals(1, otherNotesForm.getChildren().size());
-
-        BahmniForm notesForm = otherNotesForm.getChildren().get(0);
         assertEquals(notesForm.getDepthToParent(), 2);
 
         bahmniForm = bahmniFormFactory.createForm(new Concept(1, "Discharge Summary, Surgeries and Procedures", 1), null);
         assertNotNull(bahmniForm);
+        assertNull(bahmniForm.getParent());
         assertEquals(0, bahmniForm.getChildren().size());
         assertEquals(0, bahmniForm.getFields().size());
 
-        assertNull(bahmniForm.getParent());
+        verify(obsService, times(1)).getConceptsByNames(multiSelectConceptNames);
+        verify(obsService, times(1)).getConceptsByNames(ignoreConceptNames);
+    }
 
-        verify(obsService, times(1)).getAllMultiSelectConcepts();
+    private void setValuesForMemberFields(Object bahmniFormFactory, String fieldName, String valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
+        Field f1 = bahmniFormFactory.getClass().getDeclaredField(fieldName);
+        f1.setAccessible(true);
+        f1.set(bahmniFormFactory, valueForMemberField);
     }
 }

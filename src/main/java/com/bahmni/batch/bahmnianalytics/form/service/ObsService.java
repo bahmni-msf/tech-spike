@@ -27,16 +27,11 @@ public class ObsService {
 	@Value("classpath:sql/allConceptSets.sql")
 	private Resource allConceptListSqlResource;
 
-	@Value("classpath:sql/allMultiSelect.sql")
-	private Resource allMultiSelectConceptsResource;
-
 	private String conceptDetailsSql;
 
 	private String conceptListSql;
 
 	private String allConceptListSql;
-
-	private String allMultiSelectConcepts;
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -65,10 +60,6 @@ public class ObsService {
 		this.conceptDetailsSql = BatchUtils.convertResourceOutputToString(conceptDetailsSqlResource);
 		this.conceptListSql = BatchUtils.convertResourceOutputToString(conceptListSqlResource);
 		this.allConceptListSql =  BatchUtils.convertResourceOutputToString(allConceptListSqlResource);
-		this.allMultiSelectConcepts = BatchUtils.convertResourceOutputToString(allMultiSelectConceptsResource);
 	}
 
-	public List<Concept> getAllMultiSelectConcepts() {
-		return jdbcTemplate.query(allMultiSelectConcepts, new BeanPropertyRowMapper<>(Concept.class));
-	}
 }
