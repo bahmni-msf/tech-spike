@@ -5,7 +5,7 @@ SELECT
             ${column.name}
             <#assign primary_key = column.name>
         <#else >
-        MAX(if( name =  '${column.name}', value_table.value_reference, NULL)) AS '${column.name}'
+        MAX(if( name =  '${column.name}', value_table.${input.value_column_name}, NULL)) AS '${column.name}'
         </#if>
         <#if input.tableData.columns?seq_index_of(column) <=  input.tableData.columns?size - 2 >,</#if>
     </#list>

@@ -542,7 +542,199 @@
         "reference": null
       }
     ]
+  },
+  {
+    "name": "person",
+    "columns": [
+      {
+        "name": "person_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "gender",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "birthdate_estimated",
+        "type": "boolean",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "dead",
+        "type": "boolean",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "death_date",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "cause_of_death",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "person_address",
+    "columns": [
+      {
+        "name": "person_address_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "person_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable":"person",
+          "referenceColumn":"person_id"
+        }
+      },
+      {
+        "name": "preferred",
+        "type": "boolean",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "address1",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "address2",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "city_village",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "state_province",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "postal_code",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "latitude",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "longitude",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
+  },
+  {
+    "name": "person_name",
+    "columns": [
+      {
+        "name": "person_name_id",
+        "type": "integer",
+        "isPrimaryKey": true,
+        "reference": null
+      },
+      {
+        "name": "person_id",
+        "type": "integer",
+        "isPrimaryKey": false,
+        "reference": {
+          "referenceTable":"person",
+          "referenceColumn":"person_id"
+        }
+      },
+      {
+        "name": "preferred",
+        "type": "boolean",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "prefix",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "given_name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "middle_name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "family_name_prefix",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "family_name",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "family_name2",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
+        "name": "family_name_suffix",
+        "type": "text",
+        "isPrimaryKey": false,
+        "reference": null
+      }
+    ]
   }
+
+
+
 ]
 
 

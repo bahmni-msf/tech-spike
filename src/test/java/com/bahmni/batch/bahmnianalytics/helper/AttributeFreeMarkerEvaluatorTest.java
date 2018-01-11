@@ -33,6 +33,7 @@ public class AttributeFreeMarkerEvaluatorTest {
         attributeModel.setAttribute_table_name("value_table");
         attributeModel.setValue_table_joining_id("value_table_joining_id");
         attributeModel.setType_table_joining_id("type_table_joining_id");
+        attributeModel.setValue_column_name("value_column");
     }
 
     @Test (expected = Exception.class)

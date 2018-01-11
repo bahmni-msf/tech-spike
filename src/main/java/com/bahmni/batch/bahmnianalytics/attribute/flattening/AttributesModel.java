@@ -13,6 +13,7 @@ public class AttributesModel {
     private String attribute_type_pivot_column_name;
     private String value_table_joining_id;
     private String type_table_joining_id;
+    private String value_column_name;
 
 
     public AttributesModel() {
@@ -66,6 +67,14 @@ public class AttributesModel {
         this.attribute_type_pivot_column_name = attribute_type_pivot_column_name;
     }
 
+    public String getValue_column_name() {
+        return value_column_name;
+    }
+
+    public void setValue_column_name(String value_column_name) {
+        this.value_column_name = value_column_name;
+    }
+
     public TableData getTableData() {
         return tableData;
     }
@@ -73,4 +82,5 @@ public class AttributesModel {
     public void setTableData(TableData tableData) {
         this.tableData = tableData;
     }
+
 }

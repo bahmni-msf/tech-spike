@@ -5,6 +5,7 @@
     "attribute_type_pivot_column_name" : "name",
     "value_table_joining_id" :"attribute_type_id",
     "type_table_joining_id" :"visit_attribute_type_id",
+    "value_column_name":"value_reference",
     "tableData": {
       "name": "visit_attributes",
       "columns": [
@@ -26,6 +27,7 @@
     "attribute_type_pivot_column_name" : "name",
     "value_table_joining_id" :"attribute_type_id",
     "type_table_joining_id" :"program_attribute_type_id",
+    "value_column_name":"value_reference",
     "tableData": {
       "name": "program_attributes",
       "columns": [
@@ -36,6 +38,28 @@
           "reference": {
             "referenceTable": "patient_program",
             "referenceColumn": "patient_program_id"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attribute_type_table_name" : "person_attribute_type",
+    "attribute_table_name" : "person_attribute",
+    "attribute_type_pivot_column_name" : "name",
+    "value_table_joining_id" :"person_attribute_type_id",
+    "type_table_joining_id" :"person_attribute_type_id",
+    "value_column_name":"value",
+    "tableData": {
+      "name": "person_attributes",
+      "columns": [
+        {
+          "name": "person_id",
+          "type": "integer",
+          "isPrimaryKey": true,
+          "reference": {
+            "referenceTable": "person",
+            "referenceColumn": "person_id"
           }
         }
       ]
