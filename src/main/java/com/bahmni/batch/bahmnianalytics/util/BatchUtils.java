@@ -39,7 +39,8 @@ public class BatchUtils {
 		String finalValue = "";
 		switch (dataType) {
 			case "text" :
-				finalValue = "'" +  value.replaceAll("'","''") +"'"; break;
+				value = value != null ? value.replaceAll("'","''") : value;
+				finalValue = "'" +  value +"'"; break;
 			case "date" :
 				finalValue = "'" + value + "'";
 				break;

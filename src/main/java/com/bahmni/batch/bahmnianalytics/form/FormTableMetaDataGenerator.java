@@ -98,6 +98,6 @@ public class FormTableMetaDataGenerator {
     }
 
     public static String getProcessedName(String formName) {
-        return formName.replaceAll("[^\\w\\s]", " ").trim().replaceAll(" +","_").toLowerCase();
+        return formName.trim().replaceAll(" +","_").toLowerCase();
     }
 }
