@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -119,6 +120,7 @@ public class ObservationProcessorTest {
 
 
         observationProcessor.setForm(form);
+        setValuesForMemberFields(observationProcessor,"flag","true");
         observationProcessor.postConstruct();
 
         when(namedParameterJdbcTemplate.query(eq("Some Query"), any(Map.class), any(SingleColumnRowMapper.class)))
@@ -155,5 +157,11 @@ public class ObservationProcessorTest {
         List<Obs> process = observationProcessor.process(obsRow);
 
         Assert.assertEquals(0, process.size());
+    }
+
+    private void setValuesForMemberFields(Object observationProcessor, String fieldName, String valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
+        Field f1 = observationProcessor.getClass().getDeclaredField(fieldName);
+        f1.setAccessible(true);
+        f1.set(observationProcessor, valueForMemberField);
     }
 }

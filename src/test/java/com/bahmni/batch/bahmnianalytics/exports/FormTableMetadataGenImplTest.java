@@ -12,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,7 +43,7 @@ public class FormTableMetadataGenImplTest {
         tableData.setName("formName");
         Map<String, TableData> tableDataMap = new LinkedHashMap<>();
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
-        when(factory.getGeneratorForNewForm(form)).thenReturn(generator);
+        when(factory.getGeneratorForNewForm(any(),anyBoolean(),anyList())).thenReturn(generator);
         when(generator.run()).thenReturn(tableData);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
@@ -67,7 +65,7 @@ public class FormTableMetadataGenImplTest {
         Map<String, TableData> tableDataMap = new LinkedHashMap<>();
         tableDataMap.put(formName, tableData);
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
-        when(factory.getGeneratorForExistingForm(form, tableData)).thenReturn(generator);
+        when(factory.getGeneratorForExistingForm(any(), anyBoolean(),anyList(),any())).thenReturn(generator);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
 
@@ -85,7 +83,7 @@ public class FormTableMetadataGenImplTest {
         BahmniForm form = new BahmniForm();
         form.setFormName(new Concept(123,"firstForm",1));
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
-        when(factory.getGeneratorForExistingForm(any(),any())).thenReturn(generator);
+        when(factory.getGeneratorForExistingForm(any(),anyBoolean(),anyList(),any())).thenReturn(generator);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
 

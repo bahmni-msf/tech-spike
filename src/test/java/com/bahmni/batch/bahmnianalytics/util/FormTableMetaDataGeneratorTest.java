@@ -27,21 +27,30 @@ public class FormTableMetaDataGeneratorTest {
     @Rule
     ExpectedException expectedException = ExpectedException.none();
 
+    private List<Concept> multiSelectConcepts;
+
     @Before
     public void setUp() throws Exception {
         PowerMockito.mockStatic(IOUtils.class);
+        multiSelectConcepts = new ArrayList<>();
+        multiSelectConcepts.add(new Concept(3365, "Operation Notes Template", 1));
+        multiSelectConcepts.add(new Concept(1200, "Discharge Summary, Surgeries and Procedures", 1));
+        multiSelectConcepts.add(new Concept(1206, "Other Notes", 1));
+        multiSelectConcepts.add(new Concept(7771, "BP", 1));
+        multiSelectConcepts.add(new Concept(1209, "Notes", 0));
+
     }
 
     @Test
     public void shouldReturnTableDataForGivenFormWithNoForeignKeys() {
         BahmniForm form = new BahmniForm();
-        Concept formConcept = new Concept(1, "post-operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", null);
+        Concept formConcept = new Concept(1, "post operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", null);
         form.setFormName(formConcept);
         form.setParent(null);
         form.addField(new Concept(2, "APN Anaesthesia start time", "Datetime", 0, "APN Anaesthesia start time", formConcept));
         form.addField(new Concept(3, "APN Anaesthesia end time", "Datetime", 0, "APN Anaesthesia end time", formConcept));
 
-        formTableMetaDataGenerator = new FormTableMetaDataGenerator(form);
+        formTableMetaDataGenerator = new FormTableMetaDataGenerator(form,true,multiSelectConcepts);
         TableData tableData = formTableMetaDataGenerator.run();
 
         assertNotNull(tableData);
@@ -85,16 +94,16 @@ public class FormTableMetaDataGeneratorTest {
         Concept allObservationTemplate = new Concept(0, "All Observation Template", "N/A", 1, "All Observation Template", null);
         BahmniForm postOperativeForm = new BahmniForm();
         postOperativeForm.setParent(allObservationTemplateForm);
-        Concept postOperativeConcept = new Concept(0, "post-operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", allObservationTemplate);
+        Concept postOperativeConcept = new Concept(0, "post operative anaesthesia note", "N/A", 1, "post-operative anaesthesia note", allObservationTemplate);
         postOperativeForm.setFormName(postOperativeConcept);
         BahmniForm transfusionForm = new BahmniForm();
         Concept transfusionConcept = new Concept(1, "transfusion", "N/A", 1, "transfusion", postOperativeConcept);
         transfusionForm.setFormName(transfusionConcept);
         transfusionForm.setParent(postOperativeForm);
         transfusionForm.addField(new Concept(2, "Blood transfusion", "Text", 0, "Blood transfusion", transfusionConcept));
-        transfusionForm.addField(new Concept(3, "Intra-operative transfusion related reaction comments", "Text", 0, "Intra-operative transfusion related reaction comments", transfusionConcept));
+        transfusionForm.addField(new Concept(3, "Intra operative transfusion related reaction comments", "Text", 0, "Intra-operative transfusion related reaction comments", transfusionConcept));
 
-        formTableMetaDataGenerator = new FormTableMetaDataGenerator(transfusionForm);
+        formTableMetaDataGenerator = new FormTableMetaDataGenerator(transfusionForm,true,multiSelectConcepts);
         TableData tableData = formTableMetaDataGenerator.run();
 
         assertNotNull(tableData);
@@ -154,7 +163,7 @@ public class FormTableMetaDataGeneratorTest {
         tableData.setColumns(tableColumns);
         tableData.setName("formName");
 
-        FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form, tableData);
+        FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form,true,multiSelectConcepts, tableData);
         formTableMetaDataGenerator.addForeignKey();
 
         assertEquals("id_parent2", tableData.getColumns().get(1).getName());
@@ -174,7 +183,7 @@ public class FormTableMetaDataGeneratorTest {
         tableData.setColumns(tableColumns);
         tableData.setName("formName");
 
-        FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form, tableData);
+       FormTableMetaDataGenerator formTableMetaDataGenerator = new FormTableMetaDataGenerator(form,true,multiSelectConcepts, tableData);
         formTableMetaDataGenerator.addForeignKey();
 
         assertEquals(1, tableData.getColumns().size());
