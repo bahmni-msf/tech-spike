@@ -14,11 +14,14 @@ import java.util.List;
 @Component
 public class BahmniFormFactory {
 
-    @Value("${multiSelectConcepts}")
+    @Value("${addMoreAndMultiSelectConcepts}")
     private String multiSelectConceptNames;
 
     @Value("${ignoreConcepts}")
     private String ignoreConceptName;
+
+    @Value("${flag}")
+    private String flag;
 
     @Autowired
     private ObsService obsService;
@@ -45,7 +48,7 @@ public class BahmniFormFactory {
     private BahmniForm getRootFormFor(BahmniForm form) {
         if (form == null) {
             return null;
-        } else if (form.getDepthToParent() == 1) {
+        } else if (form.getDepthToParent() == 1 || !Boolean.parseBoolean(flag)) {
             return form;
         }
         return getRootFormFor(form.getParent());
@@ -60,12 +63,16 @@ public class BahmniFormFactory {
         List<Concept> childConcepts = obsService.getChildConcepts(concept.getName());
         int childDepth = depth + 1;
         for (Concept childConcept : childConcepts) {
-            if (ignoreConcepts.contains(childConcept)){
+            if(ignoreConcepts.contains(childConcept)) {
                 continue;
-            } else if (childConcept.getIsSet() == 0 && !allMultiSelectConcepts.contains(childConcept)) {
-                bahmniForm.addField(childConcept);
-            } else {
+            } else if(allMultiSelectConcepts.contains(childConcept)) {
                 bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
+            } else if(childConcept.getIsSet() == 0) {
+                bahmniForm.addField(childConcept);
+            } else if(Boolean.parseBoolean(flag)) {
+                bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
+            } else {
+                constructFormFields(childConcept, bahmniForm, childDepth);
             }
         }
     }

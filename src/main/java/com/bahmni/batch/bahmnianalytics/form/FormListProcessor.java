@@ -4,8 +4,10 @@ import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,9 @@ public class FormListProcessor {
 
     public static final String ALL_FORMS = "All Observation Templates";
 
+    @Value("${flag}")
+    private String flag;
+
     @Autowired
     private ObsService obsService;
 
@@ -23,7 +28,7 @@ public class FormListProcessor {
 
 
     public List<BahmniForm> retrieveAllForms() {
-        List<Concept> allFormConcepts = obsService.getConceptsByNames(ALL_FORMS);
+        List<Concept> allFormConcepts = Boolean.parseBoolean(flag) ? obsService.getConceptsByNames(ALL_FORMS) : obsService.getChildConcepts(ALL_FORMS);
 
         List<BahmniForm> forms = new ArrayList<>();
         for (Concept concept : allFormConcepts) {
