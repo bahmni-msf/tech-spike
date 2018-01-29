@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,12 +35,11 @@ public class FormListProcessorTest {
         formListProcessor.setBahmniFormFactory(bahmniFormFactory);
     }
 
-        @Test
-    public void shouldRetrieveAllFormsWhenFlagIsTrue() throws NoSuchFieldException, IllegalAccessException {
+    @Test
+    public void shouldRetrieveAllForms() {
         Concept conceptA = new Concept(1, "a", 1);
         List<Concept> conceptList = new ArrayList();
         conceptList.add(conceptA);
-        setValuesForMemberFields(formListProcessor,"flag","true");
 
         when(obsService.getConceptsByNames(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
 
@@ -69,46 +67,7 @@ public class FormListProcessorTest {
         assertEquals(expected.size(), actual.size());
         assertEquals(new HashSet(expected), new HashSet(actual));
         verify(obsService).getConceptsByNames(FormListProcessor.ALL_FORMS);
-    }
 
-    @Test
-    public void shouldRetrieveAllFormsWhenFlagIsFalse() throws NoSuchFieldException, IllegalAccessException {
-        Concept allObservation = new Concept(1, "All Observstion Templates", 1);
-        Concept formOneConcept = new Concept(2, "form one", 1, "form one", allObservation);
-        Concept formTwoConcept = new Concept(3, "form two", 1, "form two", allObservation);
-
-        Concept formOneField1 = new Concept(4, "form one field 1", 0, "form one field 1", formOneConcept);
-        Concept formOneField2 = new Concept(5, "form one field 2", 1, "form one field 2", formOneConcept);
-        Concept formTwoField = new Concept(6, "form two field", 0, "form two field", formTwoConcept);
-
-        List<Concept> conceptList = new ArrayList();
-        conceptList.add(formOneConcept);
-        conceptList.add(formTwoConcept);
-
-        when(obsService.getChildConcepts(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
-        setValuesForMemberFields(formListProcessor,"flag","false");
-
-        BahmniForm formOne = new BahmniFormBuilder().withName("form one").withField(formOneField1).withField(formOneField2).build();
-        BahmniForm formTwo = new BahmniFormBuilder().withName("form two").withField(formTwoField).build();
-
-        when(bahmniFormFactory.createForm(formOneConcept, null)).thenReturn(formOne);
-        when(bahmniFormFactory.createForm(formTwoConcept, null)).thenReturn(formTwo);
-
-
-        List<BahmniForm> expectedForms = Arrays.asList(formOne, formTwo);
-        List<BahmniForm> actual = formListProcessor.retrieveAllForms();
-
-        assertEquals(expectedForms.size(), actual.size());
-        assertEquals(new HashSet(expectedForms), new HashSet(actual));
-        assertEquals(formOne.getFields().size(), actual.get(0).getFields().size());
-        verify(obsService).getChildConcepts(FormListProcessor.ALL_FORMS);
-
-    }
-
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
     }
 
 }

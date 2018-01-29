@@ -17,11 +17,6 @@ public class BahmniFormBuilder {
         return this;
     }
 
-    public BahmniFormBuilder withField(Concept concept) {
-        bahmniForm.addField(concept);
-        return this;
-    }
-
     public BahmniForm build() {
         return bahmniForm;
     }

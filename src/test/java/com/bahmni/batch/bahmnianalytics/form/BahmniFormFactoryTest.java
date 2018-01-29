@@ -101,7 +101,7 @@ public class BahmniFormFactoryTest {
         assertEquals("Examination", bahmniForm.getFields().get(2).getName());
         assertEquals("Image", bahmniForm.getFields().get(3).getName());
         assertEquals(1, bahmniForm.getChildren().size());
-        assertEquals(2, bpForm.getDepthToParent());
+        assertEquals(1, bpForm.getDepthToParent());
 
         bahmniForm = bahmniFormFactory.createForm(new Concept(1, "Vitals", 1), null);
 
