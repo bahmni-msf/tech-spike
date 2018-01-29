@@ -45,8 +45,6 @@ public class ObservationExportStep {
     @Autowired
     private ObjectFactory<DatabaseObsWriter> databaseObsWriterObjectFactory;
 
-    @Value("${flag}")
-    private String flag;
 
     public Step getStep() {
         return stepBuilderFactory.get(getStepName())
@@ -58,9 +56,7 @@ public class ObservationExportStep {
     }
 
     private JdbcCursorItemReader<Map<String, Object>> obsReader() {
-        String sql = Boolean.parseBoolean(flag)
-                ? freeMarkerEvaluator.evaluate("obsWithParentSql.ftl", form)
-                : freeMarkerEvaluator.evaluate("obsWithFormAsParentSql.ftl", form);
+        String sql = freeMarkerEvaluator.evaluate("obsWithParentSql.ftl", form);
         JdbcCursorItemReader<Map<String, Object>> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
         reader.setSql(sql);

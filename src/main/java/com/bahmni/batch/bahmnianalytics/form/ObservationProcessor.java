@@ -3,7 +3,6 @@ package com.bahmni.batch.bahmnianalytics.form;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
-import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +43,8 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 	@Value("classpath:sql/formObs.sql")
 	private Resource formObsSqlResource;
 
-	@Value("${flag}")
-	private String flag;
-
 	@Autowired
 	private FormFieldTransformer formFieldTransformer;
-
-	@Autowired
-	private FreeMarkerEvaluator<BahmniForm> freeMarkerEvaluator;
 
 	@Override
 	public List<Obs> process(Map<String,Object> obsRow) throws Exception {
@@ -95,30 +88,16 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 			params.put("childObsIds", allChildObsGroupIds);
 			params.put("leafConceptIds", leafConcepts);
 
-			if(Boolean.parseBoolean(flag)) {
-				return jdbcTemplate.query(leafObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
-					@Override
-					public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
-						Obs obs = super.mapRow(resultSet, i);
-						Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
-						obs.setParentName(resultSet.getString("parentConceptName"));
-						obs.setField(concept);
-						return obs;
-					}
-				});
-			} else {
-				String leafObsWithConfigSql = freeMarkerEvaluator.evaluate("leafObsWithConfig.ftl",form);
-				return jdbcTemplate.query(leafObsWithConfigSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
-					@Override
-					public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
-						Obs obs = super.mapRow(resultSet, i);
-						Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
-						obs.setParentName(resultSet.getString("parentConceptName"));
-						obs.setField(concept);
-						return obs;
-					}
-				});
-			}
+			return jdbcTemplate.query(leafObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
+				@Override
+				public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
+					Obs obs = super.mapRow(resultSet, i);
+					Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
+					obs.setParentName(resultSet.getString("parentConceptName"));
+					obs.setField(concept);
+					return obs;
+				}
+			});
 		}
 		return  new ArrayList<>();
 	}

@@ -15,20 +15,14 @@ public class FormTableMetaDataGenerator {
 
     private BahmniForm form;
     private TableData tableData;
-    private boolean withOutConfig;
-    private List<Concept> multiSelectConcepts;
 
-    public FormTableMetaDataGenerator(BahmniForm form, boolean withOutConfig, List<Concept> multiSelectConcepts) {
+    public FormTableMetaDataGenerator(BahmniForm form) {
         this.form = form;
-        this.withOutConfig = withOutConfig;
-        this.multiSelectConcepts = multiSelectConcepts;
         tableData = new TableData();
     }
 
-    public FormTableMetaDataGenerator(BahmniForm form, boolean withOutConfig, List<Concept> multiSelectConcepts, TableData tableData) {
+    public FormTableMetaDataGenerator(BahmniForm form, TableData tableData) {
         this.form = form;
-        this.withOutConfig = withOutConfig;
-        this.multiSelectConcepts = multiSelectConcepts;
         this.tableData = tableData;
     }
 
@@ -68,10 +62,7 @@ public class FormTableMetaDataGenerator {
     }
 
     private void configureForeignKeyColumn() {
-        boolean foreignKeyWithOutConfig = form.getParent() != null && form.getParent().getParent() != null;
-        boolean foreignKeyWithConfig = !withOutConfig && multiSelectConcepts.contains(form.getFormName());
-
-        if (foreignKeyWithConfig || foreignKeyWithOutConfig) {
+        if (form.getParent() != null && form.getParent().getParent() != null) {
 
             Concept formParentConcept = form.getParent().getFormName();
             String formParentConceptName = formParentConcept.getName();
