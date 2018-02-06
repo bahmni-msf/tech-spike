@@ -559,6 +559,12 @@
         "reference": null
       },
       {
+        "name": "birthdate",
+        "type": "date",
+        "isPrimaryKey": false,
+        "reference": null
+      },
+      {
         "name": "birthdate_estimated",
         "type": "boolean",
         "isPrimaryKey": false,
