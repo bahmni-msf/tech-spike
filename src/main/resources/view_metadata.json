@@ -1,0 +1,14 @@
+[
+  {
+    "view_name" : "patient_with_person_attribute",
+    "join_table" : [
+      {
+        "table_name" : "patient",
+        "join_on_column" :"patient_id",
+        "with_table_name" : "person_attributes",
+        "with_join_on_column" :"person_id"
+      }
+
+    ]
+  }
+]

@@ -10,6 +10,7 @@ import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.table.TablesExportStep;
 import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
+import com.bahmni.batch.bahmnianalytics.views.ViewGenerator;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
@@ -75,6 +76,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	@Autowired
 	private AttributeFlattener attributeFlattener;
 
+	@Autowired
+	private ViewGenerator viewGenerator;
 
 	@Value("${zipFolder}")
 	private Resource zipFolder;
@@ -127,7 +130,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 			attributeTableExportStep.setAttributesModel(attributesModel);
 			completeDataExport.next(attributeTableExportStep.getStep());
 		}
-
+		generateViews();
 		return completeDataExport.end().build();
 	}
 
@@ -145,6 +148,10 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 	private  void flatAttributes() {
 		attributeFlattener.run();
 		tableGeneratorStep.createTables(attributeFlattener.getTableData());
+	}
+
+	private void generateViews(){
+		viewGenerator.createView();
 	}
 
 	@PreDestroy
