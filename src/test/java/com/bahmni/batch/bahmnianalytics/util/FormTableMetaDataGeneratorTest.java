@@ -45,11 +45,11 @@ public class FormTableMetaDataGeneratorTest {
         TableData tableData = formTableMetaDataGenerator.run();
 
         assertNotNull(tableData);
-        assertEquals("post_operative_anaesthesia_note", tableData.getName());
+        assertEquals("post-operative_anaesthesia_note", tableData.getName());
         assertNotNull(tableData.getColumns());
         assertEquals(5, tableData.getColumns().size());
         TableColumn postOperativeNoteColumn = tableData.getColumns().get(0);
-        assertEquals("id_post_operative_anaesthesia_note", postOperativeNoteColumn.getName());
+        assertEquals("id_post-operative_anaesthesia_note", postOperativeNoteColumn.getName());
         assertEquals("integer", postOperativeNoteColumn.getType());
         assertTrue(postOperativeNoteColumn.isPrimaryKey());
         assertNull(postOperativeNoteColumn.getReference());
@@ -108,12 +108,12 @@ public class FormTableMetaDataGeneratorTest {
         assertNull(transfusionColumn.getReference());
 
         TableColumn postOperativeColumn = tableData.getColumns().get(1);
-        assertEquals("id_post_operative_anaesthesia_note", postOperativeColumn.getName());
+        assertEquals("id_post-operative_anaesthesia_note", postOperativeColumn.getName());
         assertEquals("integer", postOperativeColumn.getType());
         assertFalse(postOperativeColumn.isPrimaryKey());
         assertNotNull(postOperativeColumn.getReference());
-        assertEquals("id_post_operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceColumn());
-        assertEquals("post_operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceTable());
+        assertEquals("id_post-operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceColumn());
+        assertEquals("post-operative_anaesthesia_note", postOperativeColumn.getReference().getReferenceTable());
 
         TableColumn patientidColumn = tableData.getColumns().get(2);
         assertEquals("patient_id", patientidColumn.getName());
@@ -134,7 +134,7 @@ public class FormTableMetaDataGeneratorTest {
         assertNull(bloodTransfusionColumn.getReference());
 
         TableColumn transfusionCommentsColumn = tableData.getColumns().get(5);
-        assertEquals("intra_operative_transfusion_related_reaction_comments", transfusionCommentsColumn.getName());
+        assertEquals("intra-operative_transfusion_related_reaction_comments", transfusionCommentsColumn.getName());
         assertEquals("text", transfusionCommentsColumn.getType());
         assertFalse(transfusionCommentsColumn.isPrimaryKey());
         assertNull(transfusionCommentsColumn.getReference());
