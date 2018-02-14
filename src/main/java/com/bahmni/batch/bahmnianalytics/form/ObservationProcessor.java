@@ -73,55 +73,36 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 	}
 
 	private List<Obs> formObs(Integer obsId) {
-		Map<String,Integer> params = new HashMap<>();
-		params.put("obsId",obsId );
-		return jdbcTemplate.query(formObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
-			@Override
-			public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
-				Obs obs = super.mapRow(resultSet, i);
-				Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
-				obs.setParentName(resultSet.getString("parentConceptName"));
-				obs.setField(concept);
-				return obs;
-			}
-		});
+        Map<String, Integer> params = new HashMap<>();
+        params.put("obsId", obsId);
+        return getQuery(params, formObsSql);
 	}
+
+    private List<Obs> getQuery(Map<String, ?> params, String queryString) {
+        return jdbcTemplate.query(queryString, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
+            @Override
+            public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
+                Obs obs = super.mapRow(resultSet, i);
+                Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
+                obs.setParentName(resultSet.getString("parentConceptName"));
+                obs.setField(concept);
+                return obs;
+            }
+        });
+    }
 
 	private List<Obs> fetchAllLeafObs(List<Integer> allChildObsGroupIds) {
-		Map<String,List<Integer>> params = new HashMap<>();
-		List<Integer> leafConcepts = formFieldTransformer.transformFormToFieldIds(form);
+        Map<String, List<Integer>> params = new HashMap<>();
+        List<Integer> leafConcepts = formFieldTransformer.transformFormToFieldIds(form);
 
-		if(allChildObsGroupIds.size() > 0 && leafConcepts.size() > 0) {
-			params.put("childObsIds", allChildObsGroupIds);
-			params.put("leafConceptIds", leafConcepts);
+        if (allChildObsGroupIds.size() > 0 && leafConcepts.size() > 0) {
+            params.put("childObsIds", allChildObsGroupIds);
+            params.put("leafConceptIds", leafConcepts);
 
-			if(!disableFormSegregation) {
-				return jdbcTemplate.query(leafObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
-					@Override
-					public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
-						Obs obs = super.mapRow(resultSet, i);
-						Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
-						obs.setParentName(resultSet.getString("parentConceptName"));
-						obs.setField(concept);
-						return obs;
-					}
-				});
-			} else {
-				String leafObsWithConfigSql = freeMarkerEvaluator.evaluate("leafObsWithConfig.ftl",form);
-				return jdbcTemplate.query(leafObsWithConfigSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
-					@Override
-					public Obs mapRow(ResultSet resultSet, int i) throws SQLException {
-						Obs obs = super.mapRow(resultSet, i);
-						Concept concept = new Concept(resultSet.getInt("conceptId"), resultSet.getString("conceptName"), 0, "");
-						obs.setParentName(resultSet.getString("parentConceptName"));
-						obs.setField(concept);
-						return obs;
-					}
-				});
-			}
-		}
-		return  new ArrayList<>();
-	}
+            return disableFormSegregation ? getQuery(params, freeMarkerEvaluator.evaluate("leafObsWithConfig.ftl", form)) : getQuery(params, leafObsSql);
+        }
+        return new ArrayList<>();
+    }
 
 	protected void retrieveChildObsIds(List<Integer> allChildObsIds, List<Integer> ids){
 
