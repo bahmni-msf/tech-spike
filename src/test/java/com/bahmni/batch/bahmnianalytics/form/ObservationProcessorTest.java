@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.form;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.domain.Obs;
@@ -120,7 +121,7 @@ public class ObservationProcessorTest {
 
 
         observationProcessor.setForm(form);
-        setValuesForMemberFields(observationProcessor,"disableFormSegregation",false);
+        CommonTestHelper.setValuesForMemberFields(observationProcessor,"disableFormSegregation",false);
         observationProcessor.postConstruct();
 
         when(namedParameterJdbcTemplate.query(eq("Some Query"), any(Map.class), any(SingleColumnRowMapper.class)))
@@ -159,9 +160,4 @@ public class ObservationProcessorTest {
         Assert.assertEquals(0, process.size());
     }
 
-    private void setValuesForMemberFields(Object observationProcessor, String fieldName, Boolean valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationProcessor.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationProcessor, valueForMemberField);
-    }
 }

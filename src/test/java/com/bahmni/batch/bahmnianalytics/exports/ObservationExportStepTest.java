@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.form.ObservationProcessor;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -52,13 +52,13 @@ public class ObservationExportStepTest {
     @Before
     public void setUp() throws Exception {
         PowerMockito.mockStatic(BatchUtils.class);
-        setValuesForMemberFields(observationExportStep, "dataSource", dataSource);
-        setValuesForMemberFields(observationExportStep, "stepBuilderFactory", stepBuilderFactory);
-        setValuesForMemberFields(observationExportStep, "outputFolder", outputFolder);
-        setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
-        setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
-        setValuesForMemberFields(observationExportStep,"databaseObsWriterObjectFactory",obsWriterObjectFactory );
-        setValuesForMemberFields(observationExportStep,"disableFormSegregation",true);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep, "dataSource", dataSource);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep, "stepBuilderFactory", stepBuilderFactory);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep, "outputFolder", outputFolder);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep, "freeMarkerEvaluator", freeMarkerEvaluator);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep, "observationProcessorFactory", observationProcessorFactory);
+        CommonTestHelper.setValuesForMemberFields(observationExportStep,"databaseObsWriterObjectFactory",obsWriterObjectFactory );
+        CommonTestHelper.setValuesForMemberFields(observationExportStep,"disableFormSegregation",true);
         BatchUtils.stepNumber = 0;
     }
 
@@ -106,11 +106,5 @@ public class ObservationExportStepTest {
 
         Assert.assertNotNull(observationExportStepStep);
         Assert.assertEquals(expectedBaseExportStep, observationExportStepStep);
-    }
-
-    private void setValuesForMemberFields(Object observationExportStep, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationExportStep.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationExportStep, valueForMemberField);
     }
 }

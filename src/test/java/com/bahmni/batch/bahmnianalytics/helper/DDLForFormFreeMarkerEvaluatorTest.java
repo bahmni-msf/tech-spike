@@ -1,18 +1,21 @@
 package com.bahmni.batch.bahmnianalytics.helper;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.exception.BatchResourceException;
 import com.bahmni.batch.bahmnianalytics.table.domain.ForeignKey;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableColumn;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import freemarker.template.Configuration;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 @PrepareForTest(FreeMarkerEvaluator.class)
@@ -30,7 +33,7 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         freeMarkerEvaluator = new FreeMarkerEvaluator<TableData>();
         configuration = new Configuration();
         configuration.setDirectoryForTemplateLoading(new File(FreeMarkerEvaluator.class.getResource("/templates").getPath()));
-        setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
+        CommonTestHelper.setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
     }
 
     @Test
@@ -100,9 +103,4 @@ public class DDLForFormFreeMarkerEvaluatorTest {
         Assert.assertEquals("DROP TABLE IF EXISTS \"formWithChildren\" CASCADE; CREATE TABLE \"formWithChildren\"( \"patient_id\" integer PRIMARY KEY , \"encounter_id\" integer REFERENCES \"encounter\" (\"id\") );", generatedSql);
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
 }

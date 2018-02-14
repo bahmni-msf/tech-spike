@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.form;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
@@ -7,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,8 +78,8 @@ public class BahmniFormFactoryTest {
         bahmniFormFactory = new BahmniFormFactory();
         bahmniFormFactory.setObsService(obsService);
         when(obsService.getConceptsByNames(multiSelectConceptNames)).thenReturn(multiSelectConcepts);
-        setValuesForMemberFields(bahmniFormFactory, "multiSelectConceptNames", multiSelectConceptNames);
-        setValuesForMemberFields(bahmniFormFactory, "disableFormSegregation", true);
+        CommonTestHelper.setValuesForMemberFields(bahmniFormFactory, "multiSelectConceptNames", multiSelectConceptNames);
+        CommonTestHelper.setValuesForMemberFields(bahmniFormFactory, "disableFormSegregation", true);
         bahmniFormFactory.postConstruct();
     }
 
@@ -136,9 +136,4 @@ public class BahmniFormFactoryTest {
         verify(obsService, times(1)).getConceptsByNames(ignoreConceptNames);
     }
 
-    private void setValuesForMemberFields(Object bahmniFormFactory, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = bahmniFormFactory.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(bahmniFormFactory, valueForMemberField);
-    }
 }

@@ -1,8 +1,9 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
-import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.table.TableGeneratorStep;
+import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,14 +11,11 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 public class TableGeneratorStepTest {
@@ -36,8 +34,8 @@ public class TableGeneratorStepTest {
     @Before
     public void setUp() throws Exception {
         tableGeneratorStep = new TableGeneratorStep();
-        setValuesForMemberFields(tableGeneratorStep, "postgresJdbcTemplate", postgresJdbcTemplate);
-        setValuesForMemberFields(tableGeneratorStep, "freeMarkerEvaluatorForTables", freeMarkerEvaluatorForTables);
+        CommonTestHelper.setValuesForMemberFields(tableGeneratorStep, "postgresJdbcTemplate", postgresJdbcTemplate);
+        CommonTestHelper.setValuesForMemberFields(tableGeneratorStep, "freeMarkerEvaluatorForTables", freeMarkerEvaluatorForTables);
     }
 
     @Test
@@ -80,9 +78,4 @@ public class TableGeneratorStepTest {
         verify(postgresJdbcTemplate, times(2)).execute(sql);
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
 }

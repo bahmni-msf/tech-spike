@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.form.FormTableMetaDataGenerator;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
@@ -12,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class FormTableMetadataGenImplTest {
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForNewForm(any(), anyBoolean(), anyList())).thenReturn(generator);
         when(generator.run()).thenReturn(tableData);
-        setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
+        CommonTestHelper.setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
 
@@ -70,7 +70,7 @@ public class FormTableMetadataGenImplTest {
         tableDataMap.put(formName, tableData);
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForExistingForm(any(), anyBoolean(), anyList(), any())).thenReturn(generator);
-        setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
+        CommonTestHelper.setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
 
@@ -89,7 +89,7 @@ public class FormTableMetadataGenImplTest {
         form.setFormName(new Concept(123, "firstForm", 1));
         formTableMetadataGenImpl.setTableDataMap(tableDataMap);
         when(factory.getGeneratorForExistingForm(any(), anyBoolean(), anyList(), any())).thenReturn(generator);
-        setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
+        CommonTestHelper.setValuesForMemberFields(formTableMetadataGenImpl, "disableFormSegregation", false);
 
         formTableMetadataGenImpl.generateTableDataForForm(form);
 
@@ -99,9 +99,4 @@ public class FormTableMetadataGenImplTest {
         assertEquals(tableDataMap.keySet().toArray()[0], "secondForm");
     }
 
-    private void setValuesForMemberFields(Object formMetadataGen, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = formMetadataGen.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(formMetadataGen, valueForMemberField);
-    }
 }

@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.table;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
@@ -11,7 +12,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +43,8 @@ public class TableRecordWriterTest {
         tableData = new TableData();
         tableData.setName("program");
         tableRecordWriter.setTableData(tableData);
-        setValuesForMemberFields(tableRecordWriter, "postgresJdbcTemplate", postgresJdbcTemplate);
-        setValuesForMemberFields(tableRecordWriter, "tableRecordHolderFreeMarkerEvaluator", tableRecordHolderFreeMarkerEvaluator);
+        CommonTestHelper.setValuesForMemberFields(tableRecordWriter, "postgresJdbcTemplate", postgresJdbcTemplate);
+        CommonTestHelper.setValuesForMemberFields(tableRecordWriter, "tableRecordHolderFreeMarkerEvaluator", tableRecordHolderFreeMarkerEvaluator);
     }
 
     @Test
@@ -58,9 +58,5 @@ public class TableRecordWriterTest {
         verify(tableRecordHolderFreeMarkerEvaluator, times(1)).evaluate(anyString(), any(TableRecordHolder.class));
     }
 
-    private void setValuesForMemberFields(Object observationExportStep, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationExportStep.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationExportStep, valueForMemberField);
-    }
+
 }

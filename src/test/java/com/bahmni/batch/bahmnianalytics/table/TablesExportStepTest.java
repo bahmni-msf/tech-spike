@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.table;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -51,11 +51,11 @@ public class TablesExportStepTest {
     @Before
     public void setUp() throws Exception {
         PowerMockito.mockStatic(BatchUtils.class);
-        setValuesForMemberFields(tablesExportStep, "dataSource", dataSource);
-        setValuesForMemberFields(tablesExportStep, "stepBuilderFactory", stepBuilderFactory);
-        setValuesForMemberFields(tablesExportStep, "tableRecordHolderFreeMarkerEvaluator", tableRecordHolderFreeMarkerEvaluator);
-        setValuesForMemberFields(tablesExportStep, "recordWriterObjectFactory", recordWriterObjectFactory);
-        setValuesForMemberFields(tablesExportStep, "resourceLoader", resourceLoader);
+        CommonTestHelper.setValuesForMemberFields(tablesExportStep, "dataSource", dataSource);
+        CommonTestHelper.setValuesForMemberFields(tablesExportStep, "stepBuilderFactory", stepBuilderFactory);
+        CommonTestHelper.setValuesForMemberFields(tablesExportStep, "tableRecordHolderFreeMarkerEvaluator", tableRecordHolderFreeMarkerEvaluator);
+        CommonTestHelper.setValuesForMemberFields(tablesExportStep, "recordWriterObjectFactory", recordWriterObjectFactory);
+        CommonTestHelper.setValuesForMemberFields(tablesExportStep, "resourceLoader", resourceLoader);
         BatchUtils.stepNumber = 0;
     }
 
@@ -95,11 +95,5 @@ public class TablesExportStepTest {
 
         Assert.assertNotNull(tablesExportStepStep);
         Assert.assertEquals(expectedBaseExportStep, tablesExportStepStep);
-    }
-
-    private void setValuesForMemberFields(Object observationExportStep, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationExportStep.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationExportStep, valueForMemberField);
     }
 }

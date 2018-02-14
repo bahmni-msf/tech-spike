@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.attribute.flattening;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,7 +14,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +63,8 @@ public class AttributeFlattenerTest {
 
         PowerMockito.mockStatic(BatchUtils.class);
 
-        setValuesForMemberFields(attributeFlattener, "metadataJson", metadataJson);
-        setValuesForMemberFields(attributeFlattener, "mysqlJdbcTemplate", mysqlJdbcTemplate);
+        CommonTestHelper.setValuesForMemberFields(attributeFlattener, "metadataJson", metadataJson);
+        CommonTestHelper.setValuesForMemberFields(attributeFlattener, "mysqlJdbcTemplate", mysqlJdbcTemplate);
     }
 
     @Test
@@ -83,9 +83,4 @@ public class AttributeFlattenerTest {
 
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
 }

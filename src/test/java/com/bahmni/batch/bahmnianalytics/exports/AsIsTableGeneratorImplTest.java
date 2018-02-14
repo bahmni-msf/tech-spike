@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.exports;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,7 +67,7 @@ public class AsIsTableGeneratorImplTest {
             "    ]\n" +
             "  }\n" +
             "]\n";
-        setValuesForMemberFields(asIsTableGenerator, "metadataJson", metadataJson);
+        CommonTestHelper.setValuesForMemberFields(asIsTableGenerator, "metadataJson", metadataJson);
     }
 
     @Test
@@ -84,9 +85,4 @@ public class AsIsTableGeneratorImplTest {
         Assert.assertEquals("Id1", asIsTableGenerator.getTableData().get(1).getColumns().get(1).getName());
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
 }

@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.helper;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.exception.BatchResourceException;
 import com.bahmni.batch.bahmnianalytics.exports.ObsRecordExtractorForTable;
 import com.bahmni.batch.bahmnianalytics.table.domain.TableData;
@@ -11,8 +12,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +31,7 @@ public class InsertObsFreeMarkerEvaluatorTest {
         freeMarkerEvaluator = new FreeMarkerEvaluator<TableData>();
         configuration = new Configuration();
         configuration.setDirectoryForTemplateLoading(new File(FreeMarkerEvaluator.class.getResource("/templates").getPath()));
-        setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
+        CommonTestHelper.setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
     }
 
     @Test
@@ -114,9 +116,4 @@ public class InsertObsFreeMarkerEvaluatorTest {
         assertEquals(expectedSql, generatedSql);
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
 }

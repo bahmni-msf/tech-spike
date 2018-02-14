@@ -89,18 +89,18 @@ public class BatchConfigurationTest {
     public void setUp() throws Exception {
         mockStatic(FileUtils.class);
         batchConfiguration = new BatchConfiguration();
-        setValuesForMemberFields(batchConfiguration, "bahmniConfigFolder", bahmniConfigFolder);
-        setValuesForMemberFields(batchConfiguration, "zipFolder", zipFolder);
-        setValuesForMemberFields(batchConfiguration, "freemarkerTemplateLocation", freemarkerTemplateLocation);
-        setValuesForMemberFields(batchConfiguration, "formListProcessor", formListProcessor);
-        setValuesForMemberFields(batchConfiguration, "jobBuilderFactory", jobBuilderFactory);
-        setValuesForMemberFields(batchConfiguration, "treatmentRegistrationBaseExportStep", treatmentRegistrationBaseExportStep);
-        setValuesForMemberFields(batchConfiguration, "observationExportStepFactory", observationExportStepFactory);
-        setValuesForMemberFields(batchConfiguration, "tableGeneratorStep", tableGeneratorStep);
-        setValuesForMemberFields(batchConfiguration, "formTableMetadataGenImpl", formTableMetadataGenImpl);
-        setValuesForMemberFields(batchConfiguration, "asIsTableGenerator", asIsTableGenerator);
-        setValuesForMemberFields(batchConfiguration, "tablesExportStepObjectFactory", tablesExportStepObjectFactory);
-        setValuesForMemberFields(batchConfiguration, "attributeFlattener", attributeFlattener);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "bahmniConfigFolder", bahmniConfigFolder);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "zipFolder", zipFolder);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "freemarkerTemplateLocation", freemarkerTemplateLocation);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "formListProcessor", formListProcessor);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "jobBuilderFactory", jobBuilderFactory);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "treatmentRegistrationBaseExportStep", treatmentRegistrationBaseExportStep);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "observationExportStepFactory", observationExportStepFactory);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "tableGeneratorStep", tableGeneratorStep);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "formTableMetadataGenImpl", formTableMetadataGenImpl);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "asIsTableGenerator", asIsTableGenerator);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "tablesExportStepObjectFactory", tablesExportStepObjectFactory);
+        CommonTestHelper.setValuesForMemberFields(batchConfiguration, "attributeFlattener", attributeFlattener);
     }
 
     @Test
@@ -162,11 +162,5 @@ public class BatchConfigurationTest {
         verify(jobFlowBuilder, times(1)).next(fstgObservationStep);
         verify(formTableMetadataGenImpl, times(1)).getTableData();
         verify(tableGeneratorStep, atLeastOnce()).createTables(formTableMetadataGenImpl.getTableData());
-    }
-
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
     }
 }

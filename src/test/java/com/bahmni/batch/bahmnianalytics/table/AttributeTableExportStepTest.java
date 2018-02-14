@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.table;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.attribute.flattening.AttributesModel;
 import com.bahmni.batch.bahmnianalytics.helper.FreeMarkerEvaluator;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
@@ -11,8 +12,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.core.io.ResourceLoader;
-
-import java.lang.reflect.Field;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,17 +37,11 @@ public class AttributeTableExportStepTest {
     @Before
     public void setUp() throws Exception {
         PowerMockito.mockStatic(BatchUtils.class);
-        setValuesForMemberFields(attributeTableExportStep, "attributesModel", attributesModel);
-        setValuesForMemberFields(attributeTableExportStep, "stepBuilderFactory", stepBuilderFactory);
-        setValuesForMemberFields(attributeTableExportStep, "attributesModelFreeMarkerEvaluator", attributesModelFreeMarkerEvaluator);
-        setValuesForMemberFields(attributeTableExportStep, "resourceLoader", resourceLoader);
+        CommonTestHelper.setValuesForMemberFields(attributeTableExportStep, "attributesModel", attributesModel);
+        CommonTestHelper.setValuesForMemberFields(attributeTableExportStep, "stepBuilderFactory", stepBuilderFactory);
+        CommonTestHelper.setValuesForMemberFields(attributeTableExportStep, "attributesModelFreeMarkerEvaluator", attributesModelFreeMarkerEvaluator);
+        CommonTestHelper.setValuesForMemberFields(attributeTableExportStep, "resourceLoader", resourceLoader);
         BatchUtils.stepNumber = 0;
-    }
-
-    private void setValuesForMemberFields(Object observationExportStep, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationExportStep.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationExportStep, valueForMemberField);
     }
 
     @Test

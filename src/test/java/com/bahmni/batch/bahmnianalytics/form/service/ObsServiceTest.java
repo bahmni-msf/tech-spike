@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.form.service;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.util.BatchUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,9 +39,9 @@ public class ObsServiceTest {
         ClassPathResource conceptListResource = Mockito.mock(ClassPathResource.class);
         PowerMockito.when(BatchUtils.convertResourceOutputToString(conceptDetailsResource)).thenReturn("conceptDetailsSQL");
         PowerMockito.when(BatchUtils.convertResourceOutputToString(conceptListResource)).thenReturn("conceptListSQL");
-        setValuesForMemberFields(obsService, "jdbcTemplate", namedParameterJdbcTemplate);
-        setValuesForMemberFields(obsService, "conceptDetailsSqlResource", conceptDetailsResource);
-        setValuesForMemberFields(obsService, "conceptListSqlResource", conceptListResource);
+        CommonTestHelper.setValuesForMemberFields(obsService, "jdbcTemplate", namedParameterJdbcTemplate);
+        CommonTestHelper.setValuesForMemberFields(obsService, "conceptDetailsSqlResource", conceptDetailsResource);
+        CommonTestHelper.setValuesForMemberFields(obsService, "conceptListSqlResource", conceptListResource);
 
         obsService.postConstruct();
     }
@@ -72,9 +72,4 @@ public class ObsServiceTest {
         Mockito.verify(namedParameterJdbcTemplate, Mockito.times(1)).query(eq("conceptListSQL"), eq(mapSqlParameterSource), any(BeanPropertyRowMapper.class));
     }
 
-    private void setValuesForMemberFields(Object observationService, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = observationService.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(observationService, valueForMemberField);
-    }
 }

@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.helper;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.exception.BatchResourceException;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import freemarker.template.Configuration;
@@ -17,7 +18,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import static org.mockito.Mockito.mock;
@@ -38,7 +38,7 @@ public class FreeMarkerEvaluatorTest {
     @Before
     public void setUp() throws Exception {
         freeMarkerEvaluator = new FreeMarkerEvaluator();
-        setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
+        CommonTestHelper.setValuesForMemberFields(freeMarkerEvaluator, "configuration", configuration);
     }
 
     @Test
@@ -74,11 +74,5 @@ public class FreeMarkerEvaluatorTest {
 
         freeMarkerEvaluator.evaluate(templateName, bahmniForm);
         Mockito.verify(configuration, times(1)).getTemplate(templateName);
-    }
-
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
     }
 }

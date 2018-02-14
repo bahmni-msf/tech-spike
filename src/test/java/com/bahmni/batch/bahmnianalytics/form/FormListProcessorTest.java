@@ -1,5 +1,6 @@
 package com.bahmni.batch.bahmnianalytics.form;
 
+import com.bahmni.batch.bahmnianalytics.CommonTestHelper;
 import com.bahmni.batch.bahmnianalytics.form.domain.BahmniForm;
 import com.bahmni.batch.bahmnianalytics.form.domain.Concept;
 import com.bahmni.batch.bahmnianalytics.form.service.ObsService;
@@ -7,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -41,7 +41,7 @@ public class FormListProcessorTest {
         Concept conceptA = new Concept(1, "a", 1);
         List<Concept> conceptList = new ArrayList();
         conceptList.add(conceptA);
-        setValuesForMemberFields(formListProcessor,"disableFormSegregation",false);
+        CommonTestHelper.setValuesForMemberFields(formListProcessor,"disableFormSegregation",false);
 
         when(obsService.getConceptsByNames(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
 
@@ -86,7 +86,7 @@ public class FormListProcessorTest {
         conceptList.add(formTwoConcept);
 
         when(obsService.getChildConcepts(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
-        setValuesForMemberFields(formListProcessor,"disableFormSegregation",true);
+        CommonTestHelper.setValuesForMemberFields(formListProcessor,"disableFormSegregation",true);
 
         BahmniForm formOne = new BahmniFormBuilder().withName("form one").withField(formOneField1).withField(formOneField2).build();
         BahmniForm formTwo = new BahmniFormBuilder().withName("form two").withField(formTwoField).build();
@@ -104,11 +104,4 @@ public class FormListProcessorTest {
         verify(obsService).getChildConcepts(FormListProcessor.ALL_FORMS);
 
     }
-
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Boolean valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
-        Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
-        f1.setAccessible(true);
-        f1.set(batchConfiguration, valueForMemberField);
-    }
-
 }
