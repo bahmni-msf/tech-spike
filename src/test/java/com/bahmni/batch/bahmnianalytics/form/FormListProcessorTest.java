@@ -41,7 +41,7 @@ public class FormListProcessorTest {
         Concept conceptA = new Concept(1, "a", 1);
         List<Concept> conceptList = new ArrayList();
         conceptList.add(conceptA);
-        setValuesForMemberFields(formListProcessor,"flag","true");
+        setValuesForMemberFields(formListProcessor,"disableFormSegregation",false);
 
         when(obsService.getConceptsByNames(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
 
@@ -86,7 +86,7 @@ public class FormListProcessorTest {
         conceptList.add(formTwoConcept);
 
         when(obsService.getChildConcepts(FormListProcessor.ALL_FORMS)).thenReturn(conceptList);
-        setValuesForMemberFields(formListProcessor,"flag","false");
+        setValuesForMemberFields(formListProcessor,"disableFormSegregation",true);
 
         BahmniForm formOne = new BahmniFormBuilder().withName("form one").withField(formOneField1).withField(formOneField2).build();
         BahmniForm formTwo = new BahmniFormBuilder().withName("form two").withField(formTwoField).build();
@@ -105,7 +105,7 @@ public class FormListProcessorTest {
 
     }
 
-    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
+    private void setValuesForMemberFields(Object batchConfiguration, String fieldName, Boolean valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
         Field f1 = batchConfiguration.getClass().getDeclaredField(fieldName);
         f1.setAccessible(true);
         f1.set(batchConfiguration, valueForMemberField);

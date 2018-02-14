@@ -79,6 +79,7 @@ public class BahmniFormFactoryTest {
         bahmniFormFactory.setObsService(obsService);
         when(obsService.getConceptsByNames(multiSelectConceptNames)).thenReturn(multiSelectConcepts);
         setValuesForMemberFields(bahmniFormFactory, "multiSelectConceptNames", multiSelectConceptNames);
+        setValuesForMemberFields(bahmniFormFactory, "disableFormSegregation", true);
         bahmniFormFactory.postConstruct();
     }
 
@@ -135,7 +136,7 @@ public class BahmniFormFactoryTest {
         verify(obsService, times(1)).getConceptsByNames(ignoreConceptNames);
     }
 
-    private void setValuesForMemberFields(Object bahmniFormFactory, String fieldName, String valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
+    private void setValuesForMemberFields(Object bahmniFormFactory, String fieldName, Object valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
         Field f1 = bahmniFormFactory.getClass().getDeclaredField(fieldName);
         f1.setAccessible(true);
         f1.set(bahmniFormFactory, valueForMemberField);

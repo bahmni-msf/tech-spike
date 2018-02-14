@@ -120,7 +120,7 @@ public class ObservationProcessorTest {
 
 
         observationProcessor.setForm(form);
-        setValuesForMemberFields(observationProcessor,"flag","true");
+        setValuesForMemberFields(observationProcessor,"disableFormSegregation",false);
         observationProcessor.postConstruct();
 
         when(namedParameterJdbcTemplate.query(eq("Some Query"), any(Map.class), any(SingleColumnRowMapper.class)))
@@ -159,7 +159,7 @@ public class ObservationProcessorTest {
         Assert.assertEquals(0, process.size());
     }
 
-    private void setValuesForMemberFields(Object observationProcessor, String fieldName, String valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
+    private void setValuesForMemberFields(Object observationProcessor, String fieldName, Boolean valueForMemberField) throws NoSuchFieldException, IllegalAccessException {
         Field f1 = observationProcessor.getClass().getDeclaredField(fieldName);
         f1.setAccessible(true);
         f1.set(observationProcessor, valueForMemberField);

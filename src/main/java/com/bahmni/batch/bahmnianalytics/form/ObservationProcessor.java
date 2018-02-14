@@ -44,8 +44,8 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 	@Value("classpath:sql/formObs.sql")
 	private Resource formObsSqlResource;
 
-	@Value("${flag}")
-	private String flag;
+	@Value("${disableFormSegregation}")
+	private Boolean disableFormSegregation;
 
 	@Autowired
 	private FormFieldTransformer formFieldTransformer;
@@ -95,7 +95,7 @@ public class ObservationProcessor implements ItemProcessor<Map<String,Object>, L
 			params.put("childObsIds", allChildObsGroupIds);
 			params.put("leafConceptIds", leafConcepts);
 
-			if(Boolean.parseBoolean(flag)) {
+			if(!disableFormSegregation) {
 				return jdbcTemplate.query(leafObsSql, params, new BeanPropertyRowMapper<Obs>(Obs.class) {
 					@Override
 					public Obs mapRow(ResultSet resultSet, int i) throws SQLException {

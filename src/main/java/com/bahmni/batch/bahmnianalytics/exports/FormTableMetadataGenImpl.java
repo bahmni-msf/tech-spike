@@ -22,8 +22,8 @@ import java.util.Map;
 @Component("FormTableMetadataGenImpl")
 public class FormTableMetadataGenImpl implements TableMetadataGenerator {
 
-    @Value("${flag}")
-    private String flag;
+    @Value("${disableFormSegregation}")
+    private Boolean disableFormSegregation;
 
     @Value("${addMoreAndMultiSelectConcepts}")
     private String multiSelectConceptsNames;
@@ -59,11 +59,11 @@ public class FormTableMetadataGenImpl implements TableMetadataGenerator {
         TableData tableDataForForm = getTableDataForForm(form);
         if (tableDataForForm != null) {
             tableDataMap.remove(form.getFormName().getName());
-            generator = factory.getGeneratorForExistingForm(form, Boolean.parseBoolean(flag), multiSelectConcepts, tableDataForForm);
+            generator = factory.getGeneratorForExistingForm(form, !disableFormSegregation, multiSelectConcepts, tableDataForForm);
             generator.addForeignKey();
             tableDataMap.put(form.getFormName().getName(), tableDataForForm);
         } else {
-            generator = factory.getGeneratorForNewForm(form, Boolean.parseBoolean(flag), multiSelectConcepts);
+            generator = factory.getGeneratorForNewForm(form, !disableFormSegregation, multiSelectConcepts);
             tableDataForForm = generator.run();
             tableDataMap.put(form.getFormName().getName(), tableDataForForm);
         }

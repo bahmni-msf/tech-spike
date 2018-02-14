@@ -17,8 +17,8 @@ public class FormListProcessor {
 
     public static final String ALL_FORMS = "All Observation Templates";
 
-    @Value("${flag}")
-    private String flag;
+    @Value("${disableFormSegregation}")
+    private Boolean disableFormSegregation;
 
     @Autowired
     private ObsService obsService;
@@ -28,7 +28,7 @@ public class FormListProcessor {
 
 
     public List<BahmniForm> retrieveAllForms() {
-        List<Concept> allFormConcepts = Boolean.parseBoolean(flag) ? obsService.getConceptsByNames(ALL_FORMS) : obsService.getChildConcepts(ALL_FORMS);
+        List<Concept> allFormConcepts = disableFormSegregation ? obsService.getChildConcepts(ALL_FORMS) : obsService.getConceptsByNames(ALL_FORMS);
 
         List<BahmniForm> forms = new ArrayList<>();
         for (Concept concept : allFormConcepts) {

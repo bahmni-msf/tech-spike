@@ -20,8 +20,8 @@ public class BahmniFormFactory {
     @Value("${ignoreConcepts}")
     private String ignoreConceptName;
 
-    @Value("${flag}")
-    private String flag;
+    @Value("${disableFormSegregation}")
+    private Boolean disableFormSegregation;
 
     @Autowired
     private ObsService obsService;
@@ -48,7 +48,7 @@ public class BahmniFormFactory {
     private BahmniForm getRootFormFor(BahmniForm form) {
         if (form == null) {
             return null;
-        } else if (form.getDepthToParent() == 1 || !Boolean.parseBoolean(flag)) {
+        } else if (form.getDepthToParent() == 1 || disableFormSegregation) {
             return form;
         }
         return getRootFormFor(form.getParent());
@@ -69,7 +69,7 @@ public class BahmniFormFactory {
                 bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
             } else if(childConcept.getIsSet() == 0) {
                 bahmniForm.addField(childConcept);
-            } else if(Boolean.parseBoolean(flag)) {
+            } else if(!disableFormSegregation) {
                 bahmniForm.addChild(createForm(childConcept, bahmniForm, childDepth));
             } else {
                 constructFormFields(childConcept, bahmniForm, childDepth);
